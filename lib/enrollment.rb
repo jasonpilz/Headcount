@@ -6,7 +6,7 @@ class Enrollment
   def in_year(year)
     # expecting year to be an int
     @data[year]
-    22620
+    # 22620 - for testing
     # access hash returning value for year
   end
 end
