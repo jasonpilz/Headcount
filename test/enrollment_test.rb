@@ -28,6 +28,22 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_dropout_rate_by_gender_in_year_returns_nil_for_unknown_year
-    skip
+    assert_nil @enrollment1.dropout_rate_in_year(1)
   end
+
+  def test_dropout_rate_by_race_in_year_returns_a_hash_with_race_markers_as_keys_pointing_to_floats
+    expected_result = {:asian => 0.007,
+                       :black => 0.002,
+                       :pacific_islander => 0,
+                       :hispanic => 0.006,
+                       :native_american => 0.036,
+                       :two_or_more => 0,
+                       :white => 0.004}
+    assert_equal expected_result, @enrollment1.dropout_rate_by_race_in_year(2012)
+  end
+
+  def test_dropout_rate_by_race_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.dropout_rate_by_race_in_year(1)
+  end
+  
 end

@@ -30,4 +30,27 @@ class Enrollment
     end
     result
   end
+
+  def dropout_rate_by_race_in_year(year)
+    # loader?
+    dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
+
+    # parser?
+    by_race_in_year = dropout_rates.select { |row| row if row[:timeframe].to_i == year }
+    binding.pry
+    by_race_in_year.empty? ? return : result = {}
+    by_race_in_year.each do |row|
+      # set these relationships to a constant hash?
+      result[:asian] = row[:data].to_f if row[:category] == "Asian Students"
+      result[:black] = row[:data].to_f if row[:category] == "Black Students"
+      result[:pacific_islander] = row[:data].to_f if row[:category] == "Native Hawaiian or Other Pacific Islander"
+      result[:hispanic] = row[:data].to_f if row[:category] == "Hispanic Students"
+      result[:native_american] = row[:data].to_f if row[:category] == "Native American Students"
+      result[:two_or_more] = row[:data].to_f if row[:category] == "Two or More Races"
+      result[:white] = row[:data].to_f if row[:category] == "White Students"
+    end
+    result
+  end
+
+
 end
