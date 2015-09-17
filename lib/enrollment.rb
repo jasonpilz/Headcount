@@ -80,4 +80,60 @@ class Enrollment
     rate.empty? ? return : rate.first[:data].to_f
   end
 
+  def graduation_rate_by_year
+    
+  end
+
+  def graduation_rate_in_year(year)
+
+  end
+
+  def kindergarten_participation_by_year
+
+  end
+
+  def kindergarten_participation_in_year(year)
+
+  end
+
+  def online_participation_by_year
+
+  end
+
+  def online_participation_in_year(year)
+
+  end
+
+  def participation_by_year
+
+  end
+
+  def participation_in_year(year)
+
+  end
+
+  def participation_by_race_or_ethnicity(race)
+
+  end
+
+  def participation_by_race_or_ethnicity_in_year(year)
+
+  end
+
+  def special_education_by_year
+
+  end
+
+  def special_education_in_year(year)
+
+  end
+
+  def remediation_by_year
+
+  end
+
+  def remediation_in_year(year)
+
+  end
+
 end

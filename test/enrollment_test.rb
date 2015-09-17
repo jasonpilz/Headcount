@@ -83,4 +83,16 @@ class EnrollmentTest < Minitest::Test
     assert_equal 0.044, @enrollment2.dropout_rate_for_race_or_ethnicity_in_year(:black, 2012)
   end
 
+  def test_graduation_rate_by_year_returns_hash_with_years_as_keys
+    
+  end
+
+  def test_graduation_rate_by_year_returns_percentage_data_as_three_digit_float
+    skip
+  end
+
+  def test_graduation_rate_in_year_returns_nil_for_unknown_year
+    skip
+  end
+
 end
