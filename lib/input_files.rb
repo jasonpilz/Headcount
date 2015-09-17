@@ -1,5 +1,5 @@
+# have the loaders communicate with this class?
 class InputFiles
-
   DROPOUT_RATES = File.expand_path("../data/Dropout rates by race and ethnicity.csv", __dir__)
   # HS_GRAD_RATES =
   # KINDERGARTEN =
