@@ -81,11 +81,19 @@ class Enrollment
   end
 
   def graduation_rate_by_year
-    
+    grad_rates = EnrollmentParser.parse_grad_rates(@name)
+    grad_rates.empty? ? return : result = {}
+    grad_rates.each do |row|
+      result[row[:timeframe].to_i] = row[:data].to_f
+    end
+    # Need to implement 3-digit truncation.
+    result
   end
 
   def graduation_rate_in_year(year)
-
+    grad_rates = EnrollmentParser.parse_grad_rates(@name)
+    rate = grad_rates.select { |row| row if row[:timeframe].to_i == year }
+    rate.empty? ? return : rate.first[:data].to_f
   end
 
   def kindergarten_participation_by_year

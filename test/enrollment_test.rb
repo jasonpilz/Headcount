@@ -84,15 +84,34 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_graduation_rate_by_year_returns_hash_with_years_as_keys
-    
+    expected_result = { 2010 => 0.895,
+                        2011 => 0.895,
+                        2012 => 0.88983,
+                        2013 => 0.91373,
+                        2014 => 0.898 }
+    assert_equal expected_result, @enrollment1.graduation_rate_by_year
   end
 
   def test_graduation_rate_by_year_returns_percentage_data_as_three_digit_float
     skip
+    # Are we expecting rounded values??? Adjust 'expected' when determined.
+    expected_result = { 2010 => 0.895,
+                        2011 => 0.895,
+                        2012 => 0.88983,
+                        2013 => 0.91373,
+                        2014 => 0.898 }
+    assert_equal expected_result, @enrollment1.graduation_rate_by_year
   end
 
   def test_graduation_rate_in_year_returns_nil_for_unknown_year
-    skip
+    assert_nil @enrollment1.graduation_rate_in_year(1987)
+    assert @enrollment1.graduation_rate_in_year(2011)
+  end
+
+  def test_graduation_rate_in_year_returns_percentage_data_as_three_digit_float
+    # Are we expecting rounded values??? Adjust 'expected' when determined.
+    assert_equal 0.88983, @enrollment1.graduation_rate_in_year(2012)
+    assert_equal 0.739, @enrollment2.graduation_rate_in_year(2011)
   end
 
 end
