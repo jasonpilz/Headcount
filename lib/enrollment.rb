@@ -9,16 +9,25 @@ class Enrollment
   end
 
   def dropout_rate_in_year(year)
-    # loader class?
+    # loader?
     dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
-    # parser class?
-    rate = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "All Students" }
-    rate = rate[0][:data].to_f unless rate.empty?
+
+    # parser class/method?
+    row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "All Students" }
+    rate = row[0][:data].to_f unless row.empty?
+  end
+
+  def dropout_rate_by_gender_in_year(year)
+    # loader?
+    dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
+
+    # parser class/method?
+    rows = dropout_rates.select { |row| row if row[:timeframe].to_i == year && (row[:category] == "Male Students" || row[:category] == "Female Students") }
+    result = {}
+    rows.each do |row|
+      result[:male] = row[:data].to_f if row[:category] == "Male Students"
+      result[:female] = row[:data].to_f if row[:category] == "Female Students"
+    end
+    result
   end
 end
-
-__END__
-enrollment = Enrollment.new("ACADEMY 20")
-enrollment.dropout_rate_in_year(2011)
-
-EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)

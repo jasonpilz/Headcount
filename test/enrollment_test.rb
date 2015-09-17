@@ -21,8 +21,13 @@ class EnrollmentTest < Minitest::Test
   def test_dropout_rate_returns_three_digit_float
     skip
   end
+
   def test_dropout_rate_by_gender_in_year_returns_a_hash_with_genders_as_keys_pointing_to_floats
     expected_result = {:female => 0.004, :male => 0.004}
     assert_equal expected_result, @enrollment1.dropout_rate_by_gender_in_year(2012)
+  end
+
+  def test_dropout_rate_by_gender_in_year_returns_nil_for_unknown_year
+    skip
   end
 end
