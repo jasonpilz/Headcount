@@ -81,7 +81,7 @@ class Enrollment
   end
 
   def graduation_rate_by_year
-    
+
   end
 
   def graduation_rate_in_year(year)
@@ -89,11 +89,17 @@ class Enrollment
   end
 
   def kindergarten_participation_by_year
-
+    kindergarten = EnrollmentParser.parse_kindergarten(@name)
+    kindergarten.empty? ? return : results = {}
+    kindergarten.sort_by! { |row| row[:timeframe] }
+                .each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f }
+    results
   end
 
   def kindergarten_participation_in_year(year)
-
+    kindergarten = EnrollmentParser.parse_kindergarten(@name)
+    result = kindergarten.select { |row| row if row[:timeframe].to_i == year }
+    result.empty? ? return : result.first[:data][0..4].to_f
   end
 
   def online_participation_by_year

@@ -20,4 +20,7 @@ class EnrollmentParser
     parse(name, InputFiles::GRAD_RATES)
   end
 
+  def self.parse_kindergarten(name)
+    parse(name, InputFiles::KINDERGARTEN)
   end
+end

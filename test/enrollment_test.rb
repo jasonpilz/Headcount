@@ -84,7 +84,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_graduation_rate_by_year_returns_hash_with_years_as_keys
-    
+
   end
 
   def test_graduation_rate_by_year_returns_percentage_data_as_three_digit_float
@@ -93,6 +93,29 @@ class EnrollmentTest < Minitest::Test
 
   def test_graduation_rate_in_year_returns_nil_for_unknown_year
     skip
+  end
+
+  def test_kindergarten_participation_by_year_returns_hash_with_years_as_keys_pointing_to_floats
+    expected_result = {2004 => 0.302,
+                       2005 => 0.267,
+                       2006 => 0.353,
+                       2007 => 0.391,
+                       2008 => 0.384,
+                       2009 => 0.390,
+                       2010 => 0.436,
+                       2011 => 0.489,
+                       2012 => 0.478,
+                       2013 => 0.487,
+                       2014 => 0.490}
+    assert_equal expected_result, @enrollment1.kindergarten_participation_by_year
+  end
+
+  def test_kindergarten_participation_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.kindergarten_participation_in_year(3000)
+  end
+
+  def test_kindergarten_participation_in_year_returns_a_percentage
+    assert_equal 0.436, @enrollment1.kindergarten_participation_in_year(2010)
   end
 
 end
