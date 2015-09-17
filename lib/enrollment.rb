@@ -1,13 +1,22 @@
+require_relative './graduation_rate'
+
 class Enrollment
   def initialize(data)
     @data = data
   end
 
+  def self.filter_by_graduation(data)
+
+  end
+
   def in_year(year)
     # expecting year to be an int
     @data[year]
-    # 22620 - for testing
-    # access hash returning value for year
+  end
+
+  def graduation_rate
+    grad_data = Enrollment.filter_by_graduation(@data)
+    GraduationRate.new(grad_data)
   end
 end
 

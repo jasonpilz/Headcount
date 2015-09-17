@@ -9,6 +9,7 @@ class DistrictRepository
   def self.from_csv(data_dir)
     data_dir = File.expand_path '../data', __dir__
     filenames = Dir.glob("#{data_dir}/*")
+    # filenames = ["/Users/patwey/code/headcount/data/Pupil enrollment.csv"]
       # results stores hashes of each file's data in an array? ... 'the MOTHER HASH'
     filename = "/Users/patwey/code/headcount/data/Pupil enrollment.csv"
     results = CSV.read(filename, headers: true, header_converters: :symbol).map { |row| row.to_h }
