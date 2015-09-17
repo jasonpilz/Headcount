@@ -2,16 +2,27 @@ require_relative './input_files'
 require_relative './enrollment_parser'
 require 'pry'
 
+class UnknownRaceError < KeyError
+end
+
 class Enrollment
   attr_reader :name
+
+  RACES = {asian: "Asian Students",
+           black: "Black Students",
+           pacific_islander: "Native Hawaiian or Other Pacific Islander",
+           hispanic: "Hispanic Students",
+           native_american: "Native American Students",
+           two_or_more: "Two or More Races",
+           white: "White Students"}
 
   def initialize(name)
     @name = name
   end
 
   def dropout_rate_in_year(year)
-    # loader?
-    dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
+    dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
+
     # parser class/method?
     row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "All Students" }
     rate = row[0][:data].to_f unless row.empty?
@@ -20,8 +31,7 @@ class Enrollment
   end
 
   def dropout_rate_by_gender_in_year(year)
-    # loader?
-    dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
+    dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
 
     # parser class/method?
     rows = dropout_rates.select { |row| row if row[:timeframe].to_i == year && (row[:category] == "Male Students" || row[:category] == "Female Students") }
@@ -34,12 +44,10 @@ class Enrollment
   end
 
   def dropout_rate_by_race_in_year(year)
-    # loader?
-    dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
+    dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
 
     # parser?
     by_race_in_year = dropout_rates.select { |row| row if row[:timeframe].to_i == year }
-    binding.pry
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
       # set these relationships to a constant hash?
@@ -54,5 +62,22 @@ class Enrollment
     result
   end
 
+  def dropout_rate_for_race_or_ethnicity(race)
+    raise UnknownRaceError unless RACES[race]
+    dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
+    race_by_year = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race)}
+    race_by_year.empty? ? return : result = {}
+    race_by_year.each do |row|
+      result[row[:timeframe].to_i] = row[:data].to_f
+    end
+    result
+  end
+
+  def dropout_rate_for_race_or_ethnicity_in_year(race, year)
+    raise UnknownRaceError unless RACES[race]
+    dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
+    rate = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race) && row[:timeframe].to_i == year }
+    rate.empty? ? return : rate.first[:data].to_f
+  end
 
 end

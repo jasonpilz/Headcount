@@ -1,5 +1,6 @@
 require 'csv'  # => true
 require 'pry'
+require_relative './input_files'
 
 class EnrollmentParser
   def self.parse(name, file)
@@ -10,4 +11,13 @@ class EnrollmentParser
     end
     results
   end
-end
+
+  def self.parse_dropout_rates(name)
+    parse(name, InputFiles::DROPOUT_RATES)
+  end
+
+  def self.parse_grad_rates(name)
+    parse(name, InputFiles::GRAD_RATES)
+  end
+
+  end
