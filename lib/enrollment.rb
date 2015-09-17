@@ -11,7 +11,7 @@ class Enrollment
 
   def dropout_rate_in_year(year)
     dropout_rates = EnrollmentParser.parse(@name, InputFiles::DROPOUT_RATES)
-    rate = dropout_rates[year][:all]
+    rate = dropout_rates[year][:all] # fix this call to match the structure of the hash the parser returns
     rate.to_i
   end
 end
