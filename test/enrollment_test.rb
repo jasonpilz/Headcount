@@ -170,4 +170,18 @@ class EnrollmentTest < Minitest::Test
     expected_result = { }
   end
 
+  def test_online_participation_by_year_returns_hash_pointing_to_ints
+    expected_result = {2011 => 33,
+                       2012 => 35,
+                       2013 => 341}
+    assert_equal expected_result, @enrollment1.online_participation_by_year
+  end
+
+  def test_online_participation_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.online_participation_in_year(4000)
+  end
+
+  def test_online_participation_in_year_returns_year_as_an_int
+    assert_equal 341, @enrollment1.online_participation_in_year(2013)
+  end
 end

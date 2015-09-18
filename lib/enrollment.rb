@@ -108,11 +108,17 @@ class Enrollment
   end
 
   def online_participation_by_year
-
+    online_enrollment = EnrollmentParser.parse_online_pupil_enrollment(@name)
+    online_enrollment.empty? ? return : results = {}
+    online_enrollment.sort_by! { |row| row[:timeframe] }
+                     .each { |row| results[row[:timeframe].to_i] = row[:data].to_i}
+    results
   end
 
   def online_participation_in_year(year)
-
+    online_enrollment = EnrollmentParser.parse_online_pupil_enrollment(@name)
+    enrollment_in_year = online_enrollment.select { |row| row if row[:timeframe].to_i == year }
+    enrollment_in_year.empty? ? return : enrollment_in_year.first[:data].to_i
   end
 
   def participation_by_year
