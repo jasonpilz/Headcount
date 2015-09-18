@@ -32,16 +32,15 @@ class EnrollmentParser
     parse(name, InputFiles::SPECIAL_ED)
   end
 
-<<<<<<< HEAD
   def self.parse_online_pupil_enrollment(name)
     parse(name, InputFiles::ONLINE_PUPIL_ENROLL)
   end
 
   def self.parse_pupil_enrollment(name)
     parse(name, InputFiles::PUPIL_ENROLL)
-=======
+  end
+
   def self.parse_remediation(name)
     parse(name, InputFiles::REMEDIATION)
->>>>>>> f40bc539f1b43f9cd1280755165058f91a06fc5c
   end
 end
