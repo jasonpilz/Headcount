@@ -2,7 +2,7 @@ require_relative './input_files'
 require_relative './enrollment_parser'
 require 'pry'
 
-class UnknownRaceError < KeyError
+class UnknownRaceError < StandardError
 end
 
 class Enrollment

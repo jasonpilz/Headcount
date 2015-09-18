@@ -1,12 +1,11 @@
-require 'csv'  # => true
+require 'csv'
 require 'pry'
 require_relative './input_files'
 
 class EnrollmentParser
-  # attr_accessor :file_type
+  
   @file_type = InputFiles
 
-  # delete this (no actually don't!)
   def self.file_type=(type)
     @file_type = type
   end
