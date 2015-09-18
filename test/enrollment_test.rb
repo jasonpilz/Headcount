@@ -166,8 +166,36 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_special_education_by_year_returns_hash_with_years_as_keys_pointing_to_floats
-    skip
-    expected_result = { }
+    expected_result = { 2009 => 0.096,
+                        2010 => 0.096,
+                        2011 => 0.097,
+                        2012 => 0.098,
+                        2013 => 0.100,
+                        2014 => 0.100 }
+    assert_equal expected_result, @enrollment2.special_education_by_year
+  end
+
+  def test_special_education_by_year_returns_hash_with_percent_as_three_digit_float
+    expected_result = { 2009 => 0.075,
+                        2010 => 0.078,
+                        2011 => 0.079,
+                        2012 => 0.078,
+                        2013 => 0.079,
+                        2014 => 0.079 }
+    assert_equal expected_result, @enrollment1.special_education_by_year
+  end
+
+  def test_special_education_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.special_education_in_year(1999)
+    assert @enrollment1.special_education_in_year(2011)
+  end
+
+  def test_special_education_in_year_retuns_percent_for_given_year
+    assert_equal 0.097, @enrollment2.special_education_in_year(2011)
+  end
+
+  def test_special_education_in_year_returns_percent_as_three_digit_float
+    assert_equal 0.100, @enrollment2.special_education_in_year(2013)
   end
 
 end
