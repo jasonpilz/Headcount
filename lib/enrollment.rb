@@ -25,9 +25,7 @@ class Enrollment
 
     # parser class/method?
     row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "All Students" }
-    rate = row[0][:data].to_f unless row.empty?
-    # return a truncated 3-digit float
-    truncated_rate = rate.round(3) if rate != nil
+    rate = row[0][:data][0..4].to_f unless row.empty?
   end
 
   def dropout_rate_by_gender_in_year(year)
@@ -77,23 +75,22 @@ class Enrollment
     raise UnknownRaceError unless RACES[race]
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
     rate = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race) && row[:timeframe].to_i == year }
-    rate.empty? ? return : rate.first[:data].to_f
+    rate.empty? ? return : rate.first[:data][0..4].to_f
   end
 
   def graduation_rate_by_year
     grad_rates = EnrollmentParser.parse_grad_rates(@name)
     grad_rates.empty? ? return : result = {}
     grad_rates.each do |row|
-      result[row[:timeframe].to_i] = row[:data].to_f
+      result[row[:timeframe].to_i] = row[:data][0..4].to_f
     end
-    # Need to implement 3-digit truncation.
     result
   end
 
   def graduation_rate_in_year(year)
     grad_rates = EnrollmentParser.parse_grad_rates(@name)
     rate = grad_rates.select { |row| row if row[:timeframe].to_i == year }
-    rate.empty? ? return : rate.first[:data].to_f
+    rate.empty? ? return : rate.first[:data][0..4].to_f
   end
 
   def kindergarten_participation_by_year
@@ -131,10 +128,26 @@ class Enrollment
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
-
+    participation = EnrollmentParser.parse_enrollment_by_race(@name)
+    by_race_in_year = participation.select do |row|
+      row if (row[:timeframe].to_i == year && (row[:dataformat] == 'Percent'))
+    end
+    by_race_in_year.empty? ? return : result = {}
+    by_race_in_year.each do |row|
+      result[:asian] = row[:data].to_f if row[:race] == RACES[:asian]
+      result[:black] = row[:data].to_f if row[:race] == RACES[:black]
+      result[:pacific_islander] = row[:data].to_f if row[:race] == RACES[:pacific_islander]
+      result[:hispanic] = row[:data].to_f if row[:race] == RACES[:hispanic]
+      result[:native_american] = row[:data].to_f if row[:race] == 'American Indian Students'
+      result[:two_or_more] = row[:data].to_f if row[:race] == 'Two or more races'
+      result[:white] = row[:data].to_f if row[:race] == RACES[:white]
+    end
+    result
   end
 
   def special_education_by_year
+    special_ed = EnrollmentParser.parse_special_ed(@name)
+    binding.pry
 
   end
 

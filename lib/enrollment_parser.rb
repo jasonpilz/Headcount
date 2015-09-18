@@ -23,4 +23,12 @@ class EnrollmentParser
   def self.parse_kindergarten(name)
     parse(name, InputFiles::KINDERGARTEN)
   end
+
+  def self.parse_enrollment_by_race(name)
+    parse(name, InputFiles::PUPIL_ENROLL_BY_RACE)
+  end
+
+  def self.parse_special_ed(name)
+    parse(name, InputFiles::SPECIAL_ED)
+  end
 end

@@ -51,6 +51,7 @@ class EnrollmentTest < Minitest::Test
 
   def test_dropout_rate_by_race_in_year_returns_three_digit_float
     skip
+    # Need data fixture to test...
   end
 
   def test_dropout_rate_for_race_or_ethnicity_raises_UnknownRaceError_for_unknown_race
@@ -77,6 +78,7 @@ class EnrollmentTest < Minitest::Test
 
   def test_dropout_rate_for_race_or_ethnicity_in_year_returns_three_digit_float
     skip
+    # Need data fixture to test...
   end
 
   def test_dropout_rate_for_race_or_ethnicity_in_year_returns_correct_rate
@@ -86,19 +88,17 @@ class EnrollmentTest < Minitest::Test
   def test_graduation_rate_by_year_returns_hash_with_years_as_keys
     expected_result = { 2010 => 0.895,
                         2011 => 0.895,
-                        2012 => 0.88983,
-                        2013 => 0.91373,
+                        2012 => 0.889,
+                        2013 => 0.913,
                         2014 => 0.898 }
     assert_equal expected_result, @enrollment1.graduation_rate_by_year
   end
 
   def test_graduation_rate_by_year_returns_percentage_data_as_three_digit_float
-    skip
-    # Are we expecting rounded values??? Adjust 'expected' when determined.
     expected_result = { 2010 => 0.895,
                         2011 => 0.895,
-                        2012 => 0.88983,
-                        2013 => 0.91373,
+                        2012 => 0.889,
+                        2013 => 0.913,
                         2014 => 0.898 }
     assert_equal expected_result, @enrollment1.graduation_rate_by_year
   end
@@ -109,8 +109,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_graduation_rate_in_year_returns_percentage_data_as_three_digit_float
-    # Are we expecting rounded values??? Adjust 'expected' when determined.
-    assert_equal 0.88983, @enrollment1.graduation_rate_in_year(2012)
+    assert_equal 0.889, @enrollment1.graduation_rate_in_year(2012)
     assert_equal 0.739, @enrollment2.graduation_rate_in_year(2011)
   end
 
@@ -135,6 +134,40 @@ class EnrollmentTest < Minitest::Test
 
   def test_kindergarten_participation_in_year_returns_a_percentage
     assert_equal 0.436, @enrollment1.kindergarten_participation_in_year(2010)
+  end
+
+  def test_participation_by_race_or_ethnicity_in_year_returns_hash_with_race_as_keys_pointing_to_floats
+    expected_result = { :asian => 0.038,
+                        :black => 0.031,
+                        :pacific_islander => 0.004,
+                        :hispanic => 0.121,
+                        :native_american => 0.004,
+                        :two_or_more => 0.053,
+                        :white => 0.75}
+    assert_equal expected_result, @enrollment1.participation_by_race_or_ethnicity_in_year(2012)
+  end
+
+  def test_participation_by_race_or_ethnicity_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.participation_by_race_or_ethnicity_in_year(2015)
+    assert @enrollment1.participation_by_race_or_ethnicity_in_year(2011)
+  end
+
+  def test_participation_by_race_or_ethnicity_in_year_returns_three_digit_float_as_percents
+    # Need data fixture to test...
+    skip
+    # expected_result = { :asian => ,
+    #                     :black => ,
+    #                     :pacific_islander => ,
+    #                     :hispanic => ,
+    #                     :native_american => ,
+    #                     :two_or_more => ,
+    #                     :white => }
+    assert_equal expected_result, @enrollment1.participation_by_race_or_ethnicity_in_year(2012)
+  end
+
+  def test_special_education_by_year_returns_hash_with_years_as_keys_pointing_to_floats
+    skip
+    expected_result = { }
   end
 
 end
