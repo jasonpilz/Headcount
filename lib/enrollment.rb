@@ -171,19 +171,40 @@ class Enrollment
 
   def special_education_by_year
     special_ed = EnrollmentParser.parse_special_ed(@name)
-    binding.pry
+    special_by_year = special_ed.select do |row|
+      row if (row[:dataformat] == 'Percent')
+    end
+    special_by_year.empty? ? return : result = {}
+    special_by_year.each do |row|
+      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+    end
+    result
   end
 
   def special_education_in_year(year)
-
+    special_ed = EnrollmentParser.parse_special_ed(@name)
+    result = special_ed.select do |row|
+      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
+    end
+    result.empty? ? return : result.first[:data][0..4].to_f
   end
 
   def remediation_by_year
-
+    remediation = EnrollmentParser.parse_remediation(@name)
+    rem = remediation.select { |row| row if row[:dataformat] == 'Percent' }
+    rem.empty? ? return : result = {}
+    rem.each do |row|
+      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+    end
+    result
   end
 
   def remediation_in_year(year)
-
+    remediation = EnrollmentParser.parse_remediation(@name)
+    result = remediation.select do |row|
+      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
+    end
+    result.empty? ? return : result.first[:data][0..4].to_f
   end
 
 end
