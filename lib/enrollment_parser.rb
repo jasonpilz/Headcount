@@ -31,4 +31,8 @@ class EnrollmentParser
   def self.parse_special_ed(name)
     parse(name, InputFiles::SPECIAL_ED)
   end
+
+  def self.parse_remediation(name)
+    parse(name, InputFiles::REMEDIATION)
+  end
 end

@@ -166,11 +166,21 @@ class Enrollment
   end
 
   def remediation_by_year
-
+    remediation = EnrollmentParser.parse_remediation(@name)
+    rem = remediation.select { |row| row if row[:dataformat] == 'Percent' }
+    rem.empty? ? return : result = {}
+    rem.each do |row|
+      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+    end
+    result
   end
 
   def remediation_in_year(year)
-
+    remediation = EnrollmentParser.parse_remediation(@name)
+    result = remediation.select do |row|
+      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
+    end
+    result.empty? ? return : result.first[:data][0..4].to_f
   end
 
 end

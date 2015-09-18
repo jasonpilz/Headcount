@@ -198,4 +198,32 @@ class EnrollmentTest < Minitest::Test
     assert_equal 0.100, @enrollment2.special_education_in_year(2013)
   end
 
+  def test_remediation_by_year_returns_hash_with_years_as_keys_pointing_to_percent
+    expected_result = { 2009 => 0.264,
+                        2010 => 0.294,
+                        2011 => 0.263 }
+    assert_equal expected_result, @enrollment1.remediation_by_year
+  end
+
+  def test_remediation_by_year_returns_hash_with_percents_as_three_point_floats
+    expected_result = { 2009 => 0.392,
+                        2010 => 0.414,
+                        2011 => 0.400 }
+    assert_equal expected_result, @enrollment2.remediation_by_year
+  end
+
+  def test_remediation_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.remediation_in_year(2008)
+    assert @enrollment1.remediation_in_year(2009)
+  end
+
+  def test_remediation_in_year_returns_percent_for_given_year
+    assert_equal 0.414, @enrollment2.remediation_in_year(2010)
+  end
+
+  def test_remediation_in_year_returns_percent_as_three_digit_float
+    assert_equal 0.414, @enrollment2.remediation_in_year(2010)
+  end
+
+
 end
