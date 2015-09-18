@@ -1,5 +1,7 @@
 # have the loaders communicate with this class?
 class InputFiles
+
+  # Enrollment
   DROPOUT_RATES = File.expand_path("../data/Dropout rates by race and ethnicity.csv", __dir__)
   GRAD_RATES = File.expand_path("../data/High school graduation rates.csv", __dir__)
   KINDERGARTEN = File.expand_path("../data/Kindergartners in full-day program.csv", __dir__)
@@ -8,4 +10,7 @@ class InputFiles
   PUPIL_ENROLL = File.expand_path("../data/Pupil enrollment.csv", __dir__)
   SPECIAL_ED = File.expand_path("../data/Special education.csv", __dir__)
   REMEDIATION = File.expand_path("../data/Remediation in higher education.csv", __dir__)
+
+  # Statewide Testing
+  
 end

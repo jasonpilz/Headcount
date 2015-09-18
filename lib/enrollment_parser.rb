@@ -3,6 +3,14 @@ require 'pry'
 require_relative './input_files'
 
 class EnrollmentParser
+  # attr_accessor :file_type
+  @file_type = InputFiles
+
+  # delete this (no actually don't!)
+  def self.file_type=(type)
+    @file_type = type
+  end
+
   def self.parse(name, file)
     results = []
     rows = CSV.read(file, headers: true, header_converters: :symbol)
@@ -13,34 +21,34 @@ class EnrollmentParser
   end
 
   def self.parse_dropout_rates(name)
-    parse(name, InputFiles::DROPOUT_RATES)
+    parse(name, @file_type::DROPOUT_RATES)
   end
 
   def self.parse_grad_rates(name)
-    parse(name, InputFiles::GRAD_RATES)
+    parse(name, @file_type::GRAD_RATES)
   end
 
   def self.parse_kindergarten(name)
-    parse(name, InputFiles::KINDERGARTEN)
+    parse(name, @file_type::KINDERGARTEN)
   end
 
   def self.parse_enrollment_by_race(name)
-    parse(name, InputFiles::PUPIL_ENROLL_BY_RACE)
+    parse(name, @file_type::PUPIL_ENROLL_BY_RACE)
   end
 
   def self.parse_special_ed(name)
-    parse(name, InputFiles::SPECIAL_ED)
+    parse(name, @file_type::SPECIAL_ED)
   end
 
   def self.parse_online_pupil_enrollment(name)
-    parse(name, InputFiles::ONLINE_PUPIL_ENROLL)
+    parse(name, @file_type::ONLINE_PUPIL_ENROLL)
   end
 
   def self.parse_pupil_enrollment(name)
-    parse(name, InputFiles::PUPIL_ENROLL)
+    parse(name, @file_type::PUPIL_ENROLL)
   end
 
   def self.parse_remediation(name)
-    parse(name, InputFiles::REMEDIATION)
+    parse(name, @file_type::REMEDIATION)
   end
 end

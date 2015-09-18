@@ -49,13 +49,13 @@ class Enrollment
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
       # set these relationships to a constant hash?
-      result[:asian] = row[:data].to_f if row[:category] == "Asian Students"
-      result[:black] = row[:data].to_f if row[:category] == "Black Students"
-      result[:pacific_islander] = row[:data].to_f if row[:category] == "Native Hawaiian or Other Pacific Islander"
-      result[:hispanic] = row[:data].to_f if row[:category] == "Hispanic Students"
-      result[:native_american] = row[:data].to_f if row[:category] == "Native American Students"
-      result[:two_or_more] = row[:data].to_f if row[:category] == "Two or More Races"
-      result[:white] = row[:data].to_f if row[:category] == "White Students"
+      result[:asian] = row[:data][0..4].to_f if row[:category] == "Asian Students"
+      result[:black] = row[:data][0..4].to_f if row[:category] == "Black Students"
+      result[:pacific_islander] = row[:data][0..4].to_f if row[:category] == "Native Hawaiian or Other Pacific Islander"
+      result[:hispanic] = row[:data][0..4].to_f if row[:category] == "Hispanic Students"
+      result[:native_american] = row[:data][0..4].to_f if row[:category] == "Native American Students"
+      result[:two_or_more] = row[:data][0..4].to_f if row[:category] == "Two or More Races"
+      result[:white] = row[:data][0..4].to_f if row[:category] == "White Students"
     end
     result
   end
@@ -66,7 +66,7 @@ class Enrollment
     race_by_year = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race)}
     race_by_year.empty? ? return : result = {}
     race_by_year.each do |row|
-      result[row[:timeframe].to_i] = row[:data].to_f
+      result[row[:timeframe].to_i] = row[:data][0..4].to_f
     end
     result
   end
@@ -158,13 +158,13 @@ class Enrollment
     end
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
-      result[:asian] = row[:data].to_f if row[:race] == RACES[:asian]
-      result[:black] = row[:data].to_f if row[:race] == RACES[:black]
-      result[:pacific_islander] = row[:data].to_f if row[:race] == RACES[:pacific_islander]
-      result[:hispanic] = row[:data].to_f if row[:race] == RACES[:hispanic]
-      result[:native_american] = row[:data].to_f if row[:race] == 'American Indian Students'
-      result[:two_or_more] = row[:data].to_f if row[:race] == 'Two or more races'
-      result[:white] = row[:data].to_f if row[:race] == RACES[:white]
+      result[:asian] = row[:data][0..4].to_f if row[:race] == RACES[:asian]
+      result[:black] = row[:data][0..4].to_f if row[:race] == RACES[:black]
+      result[:pacific_islander] = row[:data][0..4].to_f if row[:race] == RACES[:pacific_islander]
+      result[:hispanic] = row[:data][0..4].to_f if row[:race] == RACES[:hispanic]
+      result[:native_american] = row[:data][0..4].to_f if row[:race] == "American Indian Students"
+      result[:two_or_more] = row[:data][0..4].to_f if row[:race] == 'Two or more races'
+      result[:white] = row[:data][0..4].to_f if row[:race] == RACES[:white]
     end
     result
   end
