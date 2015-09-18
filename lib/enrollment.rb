@@ -74,6 +74,7 @@ class Enrollment
   def dropout_rate_for_race_or_ethnicity_in_year(race, year)
     raise UnknownRaceError unless RACES[race]
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
+    # repeated code --> method?
     rate = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race) && row[:timeframe].to_i == year }
     rate.empty? ? return : rate.first[:data][0..4].to_f
   end
@@ -89,6 +90,7 @@ class Enrollment
 
   def graduation_rate_in_year(year)
     grad_rates = EnrollmentParser.parse_grad_rates(@name)
+    # repeated code --> method?
     rate = grad_rates.select { |row| row if row[:timeframe].to_i == year }
     rate.empty? ? return : rate.first[:data][0..4].to_f
   end
@@ -103,6 +105,7 @@ class Enrollment
 
   def kindergarten_participation_in_year(year)
     kindergarten = EnrollmentParser.parse_kindergarten(@name)
+    # repeated code --> method?
     result = kindergarten.select { |row| row if row[:timeframe].to_i == year }
     result.empty? ? return : result.first[:data][0..4].to_f
   end
@@ -111,26 +114,41 @@ class Enrollment
     online_enrollment = EnrollmentParser.parse_online_pupil_enrollment(@name)
     online_enrollment.empty? ? return : results = {}
     online_enrollment.sort_by! { |row| row[:timeframe] }
-                     .each { |row| results[row[:timeframe].to_i] = row[:data].to_i}
+                     .each { |row| results[row[:timeframe].to_i] = row[:data].to_i }
     results
   end
 
   def online_participation_in_year(year)
     online_enrollment = EnrollmentParser.parse_online_pupil_enrollment(@name)
+    # repeated code --> method?
     enrollment_in_year = online_enrollment.select { |row| row if row[:timeframe].to_i == year }
     enrollment_in_year.empty? ? return : enrollment_in_year.first[:data].to_i
   end
 
   def participation_by_year
-
+    pupil_enrollment = EnrollmentParser.parse_pupil_enrollment(@name)
+    pupil_enrollment.empty? ? return : results = {}
+    pupil_enrollment.sort_by! { |row| row[:timeframe] }
+                    .each { |row| results[row[:timeframe].to_i] = row[:data].to_i }
+    results
   end
 
   def participation_in_year(year)
-
+    pupil_enrollment = EnrollmentParser.parse_pupil_enrollment(@name)
+    # repeated code --> method?
+    enrollment_in_year = pupil_enrollment.select { |row| row if row[:timeframe].to_i == year }
+    enrollment_in_year.empty? ? return : enrollment_in_year.first[:data].to_i
   end
 
   def participation_by_race_or_ethnicity(race)
-
+    # RACES constant doesn't include 'American Indian Students'
+    # :race key vs. :category key
+    raise UnknownRaceError unless RACES[race]
+    enrollment_by_race = EnrollmentParser.parse_enrollment_by_race(@name)
+    enrollment_by_race.select! { |row| row if row[:race] == RACES[race] }
+    enrollment_by_race.empty? ? return : results = {}
+    enrollment_by_race.each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f if row[:dataformat] == 'Percent' }
+    results
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
@@ -154,7 +172,6 @@ class Enrollment
   def special_education_by_year
     special_ed = EnrollmentParser.parse_special_ed(@name)
     binding.pry
-
   end
 
   def special_education_in_year(year)

@@ -35,4 +35,8 @@ class EnrollmentParser
   def self.parse_online_pupil_enrollment(name)
     parse(name, InputFiles::ONLINE_PUPIL_ENROLL)
   end
+
+  def self.parse_pupil_enrollment(name)
+    parse(name, InputFiles::PUPIL_ENROLL)
+  end
 end

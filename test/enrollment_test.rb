@@ -181,7 +181,43 @@ class EnrollmentTest < Minitest::Test
     assert_nil @enrollment1.online_participation_in_year(4000)
   end
 
-  def test_online_participation_in_year_returns_year_as_an_int
+  def test_online_participation_in_year_returns_data_as_an_int
     assert_equal 341, @enrollment1.online_participation_in_year(2013)
+  end
+
+  def test_participation_by_year_returns_hash_with_years_as_keys_pointing_to_ints
+    expected_result = {2009 => 22620,
+                       2010 => 23119,
+                       2011 => 23657,
+                       2012 => 23973,
+                       2013 => 24481,
+                       2014 => 24578}
+    assert_equal expected_result, @enrollment1.participation_by_year
+  end
+
+  def test_participation_in_year_returns_nil_for_unknown_year
+    assert_nil @enrollment1.participation_in_year(1945)
+  end
+
+  def test_participation_in_year_returns_data_as_an_int
+    assert_equal 23119, @enrollment1.participation_in_year(2010)
+  end
+
+  def test_participation_by_race_or_ethnicity_raises_UnknownRaceError_for_unknown_race
+    assert_raises UnknownRaceError do
+      @enrollment1.participation_by_race_or_ethnicity(:jason)
+    end
+  end
+
+  def test_participation_by_race_or_ethnicity_returns_a_hash_with_years_pointing_to_floats
+    expected_result = {2007 => 0.050,
+                       2008 => 0.054,
+                       2009 => 0.055,
+                       2010 => 0.040,
+                       2011 => 0.036,
+                       2012 => 0.038,
+                       2013 => 0.038,
+                       2014 => 0.037}
+    assert_equal expected_result, @enrollment1.participation_by_race_or_ethnicity(:asian)
   end
 end
