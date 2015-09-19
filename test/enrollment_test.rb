@@ -10,7 +10,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_dropout_rate_with_test_file
-    assert_equal 0.999 , @enrollment1.dropout_rate_in_year(2011)
+    assert_equal 0.002 , @enrollment1.dropout_rate_in_year(2011)
   end
 
   def test_take_district_name_by_default
@@ -18,8 +18,8 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_returns_dropout_rate_for_all_students_in_given_year
-    assert_equal 0.999, @enrollment1.dropout_rate_in_year(2011)
-    assert_equal 0.333, @enrollment2.dropout_rate_in_year(2011)
+    assert_equal 0.002, @enrollment1.dropout_rate_in_year(2011)
+    assert_equal 0.030, @enrollment2.dropout_rate_in_year(2011)
   end
 
   def test_dropout_rate_in_year_returns_nil_for_unknown_year
@@ -27,7 +27,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_dropout_rate_in_year_returns_three_digit_float
-    assert_equal 0.333, @enrollment2.dropout_rate_in_year(2011)
+    assert_equal 0.030, @enrollment2.dropout_rate_in_year(2011)
     assert_equal 0.004, @enrollment1.dropout_rate_in_year(2012)
   end
 
@@ -63,7 +63,7 @@ class EnrollmentTest < Minitest::Test
                        :native_american => 0.036,
                        :two_or_more => 0.000,
                        :white => 0.004}
-    assert_equal expected_result, @enrollment1.dropout_rate_by_race_in_year(2020)
+    assert_equal expected_result, @enrollment1.dropout_rate_by_race_in_year(2012)
   end
 
   def test_dropout_rate_for_race_or_ethnicity_raises_UnknownRaceError_for_unknown_race
@@ -74,8 +74,7 @@ class EnrollmentTest < Minitest::Test
 
   def test_dropout_rate_for_race_or_ethnicity_returns_a_hash_with_years_as_keys
       expected_result = { 2011 => 0.000,
-                          2012 => 0.007,
-                          2020 => 0.007 }
+                          2012 => 0.007 }
       assert_equal expected_result, @enrollment1.dropout_rate_for_race_or_ethnicity(:asian)
   end
 
@@ -90,7 +89,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_dropout_rate_for_race_or_ethnicity_in_year_returns_three_digit_float
-    assert_equal 0.006, @enrollment1.dropout_rate_for_race_or_ethnicity_in_year(:hispanic, 2020)
+    assert_equal 0.006, @enrollment1.dropout_rate_for_race_or_ethnicity_in_year(:hispanic, 2012)
   end
 
   def test_dropout_rate_for_race_or_ethnicity_in_year_returns_correct_rate
@@ -165,14 +164,14 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_participation_by_race_or_ethnicity_in_year_returns_three_digit_float_as_percents
-    expected_result = { :asian => 0.038,
-                        :black => 0.031,
-                        :pacific_islander => 0.004,
-                        :hispanic => 0.121,
+    expected_result = { :asian => 0.037,
+                        :black => 0.029,
+                        :pacific_islander => 0.003,
+                        :hispanic => 0.125,
                         :native_american => 0.004,
-                        :two_or_more => 0.053,
-                        :white => 0.751}
-    assert_equal expected_result, @enrollment1.participation_by_race_or_ethnicity_in_year(2020)
+                        :two_or_more => 0.058,
+                        :white => 0.740 }
+    assert_equal expected_result, @enrollment1.participation_by_race_or_ethnicity_in_year(2014)
   end
 
   def test_special_education_by_year_returns_hash_with_years_as_keys_pointing_to_floats
@@ -274,8 +273,7 @@ class EnrollmentTest < Minitest::Test
                        2011 => 0.036,
                        2012 => 0.038,
                        2013 => 0.038,
-                       2014 => 0.037,
-                       2020 => 0.038}
+                       2014 => 0.037}
     assert_equal expected_result, @enrollment1.participation_by_race_or_ethnicity(:asian)
   end
 

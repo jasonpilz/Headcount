@@ -1,5 +1,5 @@
 Location,Category,TimeFrame,DataFormat,Data
-Colorado,All Students,2011,Percent,0.333
+Colorado,All Students,2011,Percent,0.03
 Colorado,Female Students,2011,Percent,0.028
 Colorado,Male Students,2011,Percent,0.032
 Colorado,Native American Students,2011,Percent,0.065
@@ -19,7 +19,7 @@ Colorado,Native American Students,2012,Percent,0.054
 Colorado,Native Hawaiian or Other Pacific Islander,2012,Percent,0.038
 Colorado,Two or More Races,2012,Percent,0.017
 Colorado,White Students,2012,Percent,0.019
-ACADEMY 20,All Students,2011,Percent,0.999
+ACADEMY 20,All Students,2011,Percent,0.002
 ACADEMY 20,Female Students,2011,Percent,0.002
 ACADEMY 20,Male Students,2011,Percent,0.002
 ACADEMY 20,Native American Students,2011,Percent,0
@@ -30,21 +30,12 @@ ACADEMY 20,White Students,2011,Percent,0.002
 ACADEMY 20,Native Hawaiian or Other Pacific Islander,2011,Percent,0
 ACADEMY 20,Two or More Races,2011,Percent,0
 ACADEMY 20,All Students,2012,Percent,0.004
-ACADEMY 20,Asian Students,2012,Percent,0.007
-ACADEMY 20,Black Students,2012,Percent,0.002
+ACADEMY 20,Asian Students,2012,Percent,0.0073
+ACADEMY 20,Black Students,2012,Percent,0.0025
 ACADEMY 20,Female Students,2012,Percent,0.004
-ACADEMY 20,Hispanic Students,2012,Percent,0.006
+ACADEMY 20,Hispanic Students,2012,Percent,0.00611
 ACADEMY 20,Male Students,2012,Percent,0.004
-ACADEMY 20,Native American Students,2012,Percent,0.036
-ACADEMY 20,Native Hawaiian or Other Pacific Islander,2012,Percent,0
-ACADEMY 20,Two or More Races,2012,Percent,0
-ACADEMY 20,White Students,2012,Percent,0.004
-ACADEMY 20,Asian Students,2020,Percent,0.007839
-ACADEMY 20,Black Students,2020,Percent,0.0028120384
-ACADEMY 20,Female Students,2020,Percent,0.251235
-ACADEMY 20,Hispanic Students,2020,Percent,0.006576
-ACADEMY 20,Male Students,2020,Percent,0.98754
-ACADEMY 20,Native American Students,2020,Percent,0.03644
-ACADEMY 20,Native Hawaiian or Other Pacific Islander,2020,Percent,0
-ACADEMY 20,Two or More Races,2020,Percent,0
-ACADEMY 20,White Students,2020,Percent,0.0048
+ACADEMY 20,Native American Students,2012,Percent,0.03698
+ACADEMY 20,Native Hawaiian or Other Pacific Islander,2012,Percent,0.00056
+ACADEMY 20,Two or More Races,2012,Percent,0.00041
+ACADEMY 20,White Students,2012,Percent,0.00445
