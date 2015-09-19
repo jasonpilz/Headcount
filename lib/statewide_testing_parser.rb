@@ -16,6 +16,7 @@ class StatewideTestingParser
       results << row.to_h if row[:location] == name
     end
     results
+    # Possible spot to iterate through results and downcase :category/race
   end
 
   def self.parse_third_grade(name)
