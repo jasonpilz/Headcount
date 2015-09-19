@@ -45,6 +45,7 @@ class StatewideTesting
     reading = StatewideTestingParser.parse_reading(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Reading' }
     writing = StatewideTestingParser.parse_writing(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Writing' }
     pro_by_race = (math + reading + writing).flatten
+
     result = {}
     pro_by_race = pro_by_race.group_by { |row| row[:timeframe] }
     pro_by_race.each_pair do |year, arr|
@@ -65,9 +66,48 @@ class StatewideTesting
     else
       raise UnknownDataError
     end
+    result = pro_by_grade.select do |row|
+      row if (row[:score] == subject.to_s.capitalize) && (row[:timeframe].to_i == year)
+    end
+    raise UnknownDataError if result.empty?
+    result.first[:data][0..4].to_f
+  end
 
+  def proficient_for_subject_by_race_in_year(subject, race, year)
+    case subject
+    when :math
+      pro_by_subject = StatewideTestingParser.parse_math(@name)
+    when :reading
+      pro_by_subject = StatewideTestingParser.parse_reading(@name)
+    when :writing
+      pro_by_subject = StatewideTestingParser.parse_writing(@name)
+    else
+      raise UnknownDataError
+    end
+    result = pro_by_subject.select do |row|
+      row if (row[:race_ethnicity] == RACES[race]) && (row[:timeframe].to_i == year)
+    end
+    raise UnknownDataError if result.empty?
+    result.first[:data][0..4].to_f
+  end
 
-    binding.pry
+  def proficient_for_subject_in_year(subject, year)
+    case subject
+    when :math
+      pro_by_subject = StatewideTestingParser.parse_math(@name)
+    when :reading
+      pro_by_subject = StatewideTestingParser.parse_reading(@name)
+    when :writing
+      pro_by_subject = StatewideTestingParser.parse_writing(@name)
+    else
+      raise UnknownDataError
+    end
+    result = pro_by_subject.select do |row|
+      row if (row[:race_ethnicity] == 'All Students') &&
+             (row[:timeframe].to_i == year)
+    end
+    raise UnknownDataError if result.empty?
+    result.first[:data][0..4].to_f
   end
 
 end

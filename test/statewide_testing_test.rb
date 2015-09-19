@@ -81,30 +81,51 @@ class StatewideTestingTest < Minitest::Test
 
   def test_proficient_for_subject_by_grade_in_year_returns_percentage_value_as_three_digit_float
     skip
+    # Need to implement adding trailing zeros...
+    assert_equal 5, @statewide2.proficient_for_subject_by_grade_in_year(:reading, 8, 2011).to_s.length
+    assert_equal 5, @statewide2.proficient_for_subject_by_grade_in_year(:writing, 8, 2014).to_s.length
   end
 
   def test_proficient_for_subject_by_race_in_year_returns_correct_value
-    skip
+    assert_equal 0.694, @statewide1.proficient_for_subject_by_race_in_year(:reading, :black, 2012)
   end
 
   def test_proficient_for_subject_by_race_in_year_returns_UnknownDataError_for_invalid_parameter
-    skip
+    assert_raises UnknownDataError do
+      @statewide2.proficient_for_subject_by_race_in_year(:reading, :beiber, 2011)
+    end
+    assert_raises UnknownDataError do
+      @statewide2.proficient_for_subject_by_race_in_year(:phy_ed, :hispanic, 2011)
+    end
+    assert_raises UnknownDataError do
+      @statewide2.proficient_for_subject_by_race_in_year(:writing, :white, 2020)
+    end
   end
 
   def test_proficient_for_subject_by_race_in_year_returns_percentage_value_as_three_digit_float
     skip
+    # Need to implement adding trailing zeros...
+    assert_equal 5, @statewide2.proficient_for_subject_by_race_in_year(:reading, :black, 2011).to_s.length
+    assert_equal 5, @statewide1.proficient_for_subject_by_race_in_year(:writing, :white, 2013).to_s.length
   end
 
   def test_proficient_for_subject_in_year_returns_correct_value
-    skip
+    assert_equal 0.689, @statewide1.proficient_for_subject_in_year(:math, 2012)
   end
 
   def test_proficient_for_subject_in_year_returns_UnknownDataError_for_invalid_parameter
-    skip
+    assert_raises UnknownDataError do
+      @statewide2.proficient_for_subject_in_year(:reading, 'fourty')
+    end
+    assert_raises UnknownDataError do
+      @statewide2.proficient_for_subject_in_year(:phy_ed, 2011)
+    end
   end
 
   def test_proficient_for_subject_in_year_returns_percentage_value_as_three_digit_float
     skip
+    assert_equal 5, @statewide2.proficient_for_subject_in_year(:reading, 2011).to_s.length
+    assert_equal 5, @statewide1.proficient_for_subject_in_year(:writing, 2013).to_s.length
   end
 
 end
