@@ -15,8 +15,15 @@ class StatewideTestingParser
     rows.each do |row|
       results << row.to_h if row[:location] == name
     end
+    # iterate through results and downcase :category/race
+
+    # results.each do |row|
+    #   row.each_pair do |k,v|
+    #     v.downcase!
+    #   end
+    # end
+
     results
-    # Possible spot to iterate through results and downcase :category/race
   end
 
   def self.parse_third_grade(name)
