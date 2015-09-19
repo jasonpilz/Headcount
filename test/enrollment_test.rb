@@ -4,7 +4,7 @@ require_relative '../lib/test_files'
 class EnrollmentTest < Minitest::Test
 
   def setup
-    EnrollmentParser.file_type = TestFiles # sets Parser to use fixtures for the tests
+    #EnrollmentParser.file_type = TestFiles #TestFiles # sets Parser to use fixtures for the tests
     @enrollment1 = Enrollment.new('ACADEMY 20')
     @enrollment2 = Enrollment.new('Colorado')
   end
