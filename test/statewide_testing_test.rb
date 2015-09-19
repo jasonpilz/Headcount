@@ -68,7 +68,15 @@ class StatewideTestingTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_grade_in_year_returns_UnknownDataError_for_invalid_parameter
-    skip
+    assert_raises UnknownDataError do
+      @statewide1.proficient_for_subject_by_grade_in_year(:science, 3, 2011)
+    end
+    assert_raises UnknownDataError do
+      @statewide1.proficient_for_subject_by_grade_in_year(:math, 4, 2011)
+    end
+    assert_raises UnknownDataError do
+      @statewide2.proficient_for_subject_by_grade_in_year(:reading, 3, 1999)
+    end
   end
 
   def test_proficient_for_subject_by_grade_in_year_returns_percentage_value_as_three_digit_float
