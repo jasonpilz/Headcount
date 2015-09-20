@@ -32,4 +32,9 @@ class SmartInputFilesTest < Minitest::Test
     assert_equal ["/Users/patwey/code/headcount/data/Special education.csv", 'csv'], sif.special_ed.first
     assert_equal ["/Users/patwey/code/headcount/data/Remediation in higher education.csv", 'csv'], sif.remediation.first
   end
+
+  def test_it_returns_array_with_information_on_file_type
+    sif = SmartInputFiles.new('../data')
+    assert_equal 'csv', sif.dropout_rates.flatten.last
+  end
 end

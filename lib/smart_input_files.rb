@@ -5,6 +5,8 @@ class SmartInputFiles
   #      returns a nested array: [[filepath, csv]]
   #                        also: [[file1, csv], [file2, json]]
 
+  # CURRENTLY ONLY WORKS FOR ENROLLMENT RELATED FILES
+
   attr_reader :filenames
 
   def initialize(dir_name = '../data')
