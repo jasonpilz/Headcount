@@ -8,13 +8,13 @@ end
 class Enrollment
   attr_reader :name
 
-  RACES = {asian: "Asian Students",
-           black: "Black Students",
-           pacific_islander: "Native Hawaiian or Other Pacific Islander",
-           hispanic: "Hispanic Students",
-           native_american: "Native American Students",
-           two_or_more: "Two or More Races",
-           white: "White Students"}
+  RACES = {asian: "asian students",
+           black: "black students",
+           pacific_islander: "native hawaiian or other pacific islander",
+           hispanic: "hispanic students",
+           native_american: "native american students",
+           two_or_more: "two or more races",
+           white: "white students"}
 
   def initialize(name)
     @name = name
@@ -24,7 +24,7 @@ class Enrollment
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
 
     # parser class/method?
-    row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "All Students" }
+    row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "all students" }
     rate = row[0][:data][0..4].to_f unless row.empty?
   end
 
@@ -32,11 +32,11 @@ class Enrollment
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
 
     # parser class/method?
-    rows = dropout_rates.select { |row| row if row[:timeframe].to_i == year && (row[:category] == "Male Students" || row[:category] == "Female Students") }
+    rows = dropout_rates.select { |row| row if row[:timeframe].to_i == year && (row[:category] == "male students" || row[:category] == "female students") }
     result = {}
     rows.each do |row|
-      result[:male] = row[:data].to_f if row[:category] == "Male Students"
-      result[:female] = row[:data].to_f if row[:category] == "Female Students"
+      result[:male] = row[:data].to_f if row[:category] == "male students"
+      result[:female] = row[:data].to_f if row[:category] == "female students"
     end
     return result unless result == {}
   end
@@ -49,13 +49,13 @@ class Enrollment
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
       # set these relationships to a constant hash?
-      result[:asian] = row[:data][0..4].to_f if row[:category] == "Asian Students"
-      result[:black] = row[:data][0..4].to_f if row[:category] == "Black Students"
-      result[:pacific_islander] = row[:data][0..4].to_f if row[:category] == "Native Hawaiian or Other Pacific Islander"
-      result[:hispanic] = row[:data][0..4].to_f if row[:category] == "Hispanic Students"
-      result[:native_american] = row[:data][0..4].to_f if row[:category] == "Native American Students"
-      result[:two_or_more] = row[:data][0..4].to_f if row[:category] == "Two or More Races"
-      result[:white] = row[:data][0..4].to_f if row[:category] == "White Students"
+      result[:asian] = row[:data][0..4].to_f if row[:category] == RACES[:asian]
+      result[:black] = row[:data][0..4].to_f if row[:category] == RACES[:black]
+      result[:pacific_islander] = row[:data][0..4].to_f if row[:category] == RACES[:pacific_islander]
+      result[:hispanic] = row[:data][0..4].to_f if row[:category] == RACES[:hispanic]
+      result[:native_american] = row[:data][0..4].to_f if row[:category] == RACES[:native_american]
+      result[:two_or_more] = row[:data][0..4].to_f if row[:category] == RACES[:two_or_more]
+      result[:white] = row[:data][0..4].to_f if row[:category] == RACES[:white]
     end
     result
   end
@@ -147,14 +147,14 @@ class Enrollment
     enrollment_by_race = EnrollmentParser.parse_enrollment_by_race(@name)
     enrollment_by_race.select! { |row| row if row[:race] == RACES[race] }
     enrollment_by_race.empty? ? return : results = {}
-    enrollment_by_race.each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f if row[:dataformat] == 'Percent' }
+    enrollment_by_race.each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f if row[:dataformat] == 'percent' }
     results
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
     participation = EnrollmentParser.parse_enrollment_by_race(@name)
     by_race_in_year = participation.select do |row|
-      row if (row[:timeframe].to_i == year && (row[:dataformat] == 'Percent'))
+      row if (row[:timeframe].to_i == year && (row[:dataformat] == 'percent'))
     end
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
@@ -162,8 +162,8 @@ class Enrollment
       result[:black] = row[:data][0..4].to_f if row[:race] == RACES[:black]
       result[:pacific_islander] = row[:data][0..4].to_f if row[:race] == RACES[:pacific_islander]
       result[:hispanic] = row[:data][0..4].to_f if row[:race] == RACES[:hispanic]
-      result[:native_american] = row[:data][0..4].to_f if row[:race] == "American Indian Students"
-      result[:two_or_more] = row[:data][0..4].to_f if row[:race] == 'Two or more races'
+      result[:native_american] = row[:data][0..4].to_f if row[:race] == "american indian students"
+      result[:two_or_more] = row[:data][0..4].to_f if row[:race] == RACES[:two_or_more]
       result[:white] = row[:data][0..4].to_f if row[:race] == RACES[:white]
     end
     result
@@ -172,7 +172,7 @@ class Enrollment
   def special_education_by_year
     special_ed = EnrollmentParser.parse_special_ed(@name)
     special_by_year = special_ed.select do |row|
-      row if (row[:dataformat] == 'Percent')
+      row if (row[:dataformat] == 'percent')
     end
     special_by_year.empty? ? return : result = {}
     special_by_year.each do |row|
@@ -184,14 +184,14 @@ class Enrollment
   def special_education_in_year(year)
     special_ed = EnrollmentParser.parse_special_ed(@name)
     result = special_ed.select do |row|
-      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
+      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'percent')
     end
     result.empty? ? return : result.first[:data][0..4].to_f
   end
 
   def remediation_by_year
     remediation = EnrollmentParser.parse_remediation(@name)
-    rem = remediation.select { |row| row if row[:dataformat] == 'Percent' }
+    rem = remediation.select { |row| row if row[:dataformat] == 'percent' }
     rem.empty? ? return : result = {}
     rem.each do |row|
       result[row[:timeframe].to_i] = row[:data][0..4].to_f
@@ -202,7 +202,7 @@ class Enrollment
   def remediation_in_year(year)
     remediation = EnrollmentParser.parse_remediation(@name)
     result = remediation.select do |row|
-      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
+      row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'percent')
     end
     result.empty? ? return : result.first[:data][0..4].to_f
   end

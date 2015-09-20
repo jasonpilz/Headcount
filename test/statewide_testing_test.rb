@@ -4,7 +4,7 @@ require_relative '../lib/test_files'
 class StatewideTestingTest < Minitest::Test
 
   def setup
-    #StatewideTestingParser.file_type = TestFiles # sets Parser to use fixtures for the tests
+    StatewideTestingParser.file_type = TestFiles # sets Parser to use fixtures for the tests
     @statewide1 = StatewideTesting.new('ACADEMY 20')
     @statewide2 = StatewideTesting.new('Colorado')
   end

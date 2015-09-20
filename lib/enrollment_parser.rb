@@ -3,7 +3,7 @@ require 'pry'
 require_relative './input_files'
 
 class EnrollmentParser
-  
+
   @file_type = InputFiles
 
   def self.file_type=(type)
@@ -16,6 +16,7 @@ class EnrollmentParser
     rows.each do |row|
       results << row.to_h if row[:location] == name
     end
+    results.each { |row| row.each_pair { |k,v| v.downcase! } }
     results
   end
 

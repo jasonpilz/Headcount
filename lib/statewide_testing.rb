@@ -7,13 +7,13 @@ end
 class StatewideTesting
   attr_reader :name
 
-  RACES = {asian: "Asian",
-           black: "Black",
-           pacific_islander: "Hawaiian/Pacific Islander",
-           hispanic: "Hispanic",
-           native_american: "Native American",
-           two_or_more: "Two or more",
-           white: "White"}
+  RACES = {asian: "asian",
+           black: "black",
+           pacific_islander: "hawaiian/pacific islander",
+           hispanic: "hispanic",
+           native_american: "native american",
+           two_or_more: "two or more",
+           white: "white"}
 
   def initialize(name)
     @name = name
@@ -41,9 +41,9 @@ class StatewideTesting
 
   def proficient_by_race_or_ethnicity(race)
     raise UnknownDataError unless RACES[race]
-    math = StatewideTestingParser.parse_math(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Math' }
-    reading = StatewideTestingParser.parse_reading(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Reading' }
-    writing = StatewideTestingParser.parse_writing(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Writing' }
+    math = StatewideTestingParser.parse_math(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'math' }
+    reading = StatewideTestingParser.parse_reading(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'reading' }
+    writing = StatewideTestingParser.parse_writing(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'writing' }
     pro_by_race = (math + reading + writing).flatten
 
     result = {}
@@ -67,7 +67,7 @@ class StatewideTesting
       raise UnknownDataError
     end
     result = pro_by_grade.select do |row|
-      row if (row[:score] == subject.to_s.capitalize) && (row[:timeframe].to_i == year)
+      row if (row[:score] == subject.to_s) && (row[:timeframe].to_i == year)
     end
     raise UnknownDataError if result.empty?
     result.first[:data][0..4].to_f
@@ -103,7 +103,7 @@ class StatewideTesting
       raise UnknownDataError
     end
     result = pro_by_subject.select do |row|
-      row if (row[:race_ethnicity] == 'All Students') &&
+      row if (row[:race_ethnicity] == 'all students') &&
              (row[:timeframe].to_i == year)
     end
     raise UnknownDataError if result.empty?
