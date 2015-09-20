@@ -4,4 +4,6 @@ Find the assignment here: https://github.com/turingschool/curriculum/blob/master
 
 [![Stories in Ready](https://badge.waffle.io/jasonpilz/Headcount.svg?label=ready&title=Ready)](http://waffle.io/jasonpilz/Headcount)
 
+[![Stories in Backlog](https://badge.waffle.io/jasonpilz/Headcount.svg?label=backlog&title=Backlog)](http://waffle.io/jasonpilz/Headcount)
+
 [![Throughput Graph](https://graphs.waffle.io/jasonpilz/Headcount/throughput.svg)](https://waffle.io/jasonpilz/Headcount/metrics)
