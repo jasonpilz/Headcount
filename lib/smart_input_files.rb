@@ -2,8 +2,9 @@ class SmartInputFiles
   # can be initialized with a dir name
   # file groups are called as methods on the instance
   # e.g. sif = SmartInputFiles.new('../fake_dir')
-  #      sif.dropout_rates == InputFiles::DROPOUT_RATES
-  
+  #      returns a nested array: [[filepath, csv]]
+  #                        also: [[file1, csv], [file2, json]]
+
   attr_reader :filenames
 
   def initialize(dir_name = '../data')
@@ -15,11 +16,16 @@ class SmartInputFiles
     filepath.split('/').last.split('.').first.downcase
   end
 
+  def get_file_type(filepath)
+    filepath.split('/').last.split('.').last.downcase
+  end
+
   def dropout_rates
     dropout_rates = []
     @filenames.each do |filename|
       name = get_formatted_filename(filename)
-      dropout_rates << filename if name.include?('dropout' || 'drop')
+      type = get_file_type(filename)
+      dropout_rates << [filename, type] if name.include?('dropout' || 'drop')
     end
     dropout_rates.uniq
   end
@@ -28,7 +34,8 @@ class SmartInputFiles
     grad_rates = []
     @filenames.each do |filename|
       name = get_formatted_filename(filename)
-      grad_rates << filename if name.include?('graduation' || 'grad')
+      type = get_file_type(filename)
+      grad_rates << [filename, type] if name.include?('graduation' || 'grad')
     end
     grad_rates.uniq
   end
@@ -37,7 +44,8 @@ class SmartInputFiles
     kindergarten = []
     @filenames.each do |filename|
       name = get_formatted_filename(filename)
-      kindergarten << filename if name.include?('kindergartners' || 'kindergarten')
+      type = get_file_type(filename)
+      kindergarten << [filename, type] if name.include?('kindergartners' || 'kindergarten')
     end
     kindergarten.uniq
   end
@@ -46,7 +54,8 @@ class SmartInputFiles
     online_pupil_enroll = []
     @filenames.each do |filename|
       name = get_formatted_filename(filename)
-      online_pupil_enroll << filename if name.include?('online') &&
+      type = get_file_type(filename)
+      online_pupil_enroll << [filename, type] if name.include?('online') &&
                                      name.include?('enrollment' || 'enroll')
     end
     online_pupil_enroll.uniq
@@ -56,7 +65,8 @@ class SmartInputFiles
     pupil_enroll_by_race = []
     @filenames.each do |filename|
       name = get_formatted_filename(filename)
-      pupil_enroll_by_race << filename if name.include?('race' || 'ethnicity') &&
+      type = get_file_type(filename)
+      pupil_enroll_by_race << [filename, type] if name.include?('race' || 'ethnicity') &&
                                       name.include?('enrollment' || 'enroll')
     end
     pupil_enroll_by_race.uniq
@@ -66,10 +76,11 @@ class SmartInputFiles
     pupil_enroll = []
     @filenames.each do |filename|
     name = get_formatted_filename(filename)
-    pupil_enroll << filename if name.include?('enrollment' || 'enroll') &&
-                            !name.include?('online') &&
-                            !name.include?('race') &&
-                            !name.include?('ethnicity')
+    type = get_file_type(filename)
+    pupil_enroll << [filename, type] if name.include?('enrollment' || 'enroll') &&
+                                        !name.include?('online') &&
+                                        !name.include?('race') &&
+                                        !name.include?('ethnicity')
     end
     pupil_enroll.uniq
   end
@@ -78,7 +89,8 @@ class SmartInputFiles
     special_ed = []
     @filenames.each do |filename|
     name = get_formatted_filename(filename)
-    special_ed << filename if name.include?('special' || 'special-education' ||
+    type = get_file_type(filename)
+    special_ed << [filename, type] if name.include?('special' || 'special-education' ||
                                       'special-ed')
     end
     special_ed.uniq
@@ -88,7 +100,8 @@ class SmartInputFiles
     remediation = []
     @filenames.each do |filename|
       name = get_formatted_filename(filename)
-      remediation << filename if name.include?('remediation' || 'remed')
+      type = get_file_type(filename)
+      remediation << [filename, type] if name.include?('remediation' || 'remed')
     end
     remediation.uniq
   end
