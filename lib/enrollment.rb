@@ -1,6 +1,5 @@
-require_relative './input_files'
 require_relative './enrollment_parser'
-require_relative './smart_enrollment_loader'
+require_relative './enrollment_loader'
 require 'pry'
 
 class UnknownRaceError < StandardError
@@ -22,7 +21,7 @@ class Enrollment
   end
 
   def dropout_rate_in_year(year)
-    dropout_rates = SmartEnrollmentLoader.load_dropout_rates(@name)
+    dropout_rates = EnrollmentLoader.load_dropout_rates(@name)
 
     # parser class/method?
     row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "All Students" }
@@ -30,7 +29,7 @@ class Enrollment
   end
 
   def dropout_rate_by_gender_in_year(year)
-    dropout_rates = SmartEnrollmentLoader.load_dropout_rates(@name)
+    dropout_rates = EnrollmentLoader.load_dropout_rates(@name)
 
     # parser class/method?
     rows = dropout_rates.select { |row| row if row[:timeframe].to_i == year && (row[:category] == "Male Students" || row[:category] == "Female Students") }
@@ -43,7 +42,7 @@ class Enrollment
   end
 
   def dropout_rate_by_race_in_year(year)
-    dropout_rates = SmartEnrollmentLoader.load_dropout_rates(@name)
+    dropout_rates = EnrollmentLoader.load_dropout_rates(@name)
 
     # parser?
     by_race_in_year = dropout_rates.select { |row| row if row[:timeframe].to_i == year }
@@ -63,7 +62,7 @@ class Enrollment
 
   def dropout_rate_for_race_or_ethnicity(race)
     raise UnknownRaceError unless RACES[race]
-    dropout_rates = SmartEnrollmentLoader.load_dropout_rates(@name)
+    dropout_rates = EnrollmentLoader.load_dropout_rates(@name)
     race_by_year = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race)}
     race_by_year.empty? ? return : result = {}
     race_by_year.each do |row|
@@ -74,14 +73,14 @@ class Enrollment
 
   def dropout_rate_for_race_or_ethnicity_in_year(race, year)
     raise UnknownRaceError unless RACES[race]
-    dropout_rates = SmartEnrollmentLoader.load_dropout_rates(@name)
+    dropout_rates = EnrollmentLoader.load_dropout_rates(@name)
     # repeated code --> method?
     rate = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race) && row[:timeframe].to_i == year }
     rate.empty? ? return : rate.first[:data][0..4].to_f
   end
 
   def graduation_rate_by_year
-    grad_rates = SmartEnrollmentLoader.load_grad_rates(@name)
+    grad_rates = EnrollmentLoader.load_grad_rates(@name)
     grad_rates.empty? ? return : result = {}
     grad_rates.each do |row|
       result[row[:timeframe].to_i] = row[:data][0..4].to_f
@@ -90,14 +89,14 @@ class Enrollment
   end
 
   def graduation_rate_in_year(year)
-    grad_rates = SmartEnrollmentLoader.load_grad_rates(@name)
+    grad_rates = EnrollmentLoader.load_grad_rates(@name)
     # repeated code --> method?
     rate = grad_rates.select { |row| row if row[:timeframe].to_i == year }
     rate.empty? ? return : rate.first[:data][0..4].to_f
   end
 
   def kindergarten_participation_by_year
-    kindergarten = SmartEnrollmentLoader.load_kindergarten(@name)
+    kindergarten = EnrollmentLoader.load_kindergarten(@name)
     kindergarten.empty? ? return : results = {}
     kindergarten.sort_by! { |row| row[:timeframe] }
                 .each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f }
@@ -105,14 +104,14 @@ class Enrollment
   end
 
   def kindergarten_participation_in_year(year)
-    kindergarten = SmartEnrollmentLoader.load_kindergarten(@name)
+    kindergarten = EnrollmentLoader.load_kindergarten(@name)
     # repeated code --> method?
     result = kindergarten.select { |row| row if row[:timeframe].to_i == year }
     result.empty? ? return : result.first[:data][0..4].to_f
   end
 
   def online_participation_by_year
-    online_enrollment = SmartEnrollmentLoader.load_online_enrollment(@name)
+    online_enrollment = EnrollmentLoader.load_online_enrollment(@name)
     online_enrollment.empty? ? return : results = {}
     online_enrollment.sort_by! { |row| row[:timeframe] }
                      .each { |row| results[row[:timeframe].to_i] = row[:data].to_i }
@@ -120,14 +119,14 @@ class Enrollment
   end
 
   def online_participation_in_year(year)
-    online_enrollment = SmartEnrollmentLoader.load_online_enrollment(@name)
+    online_enrollment = EnrollmentLoader.load_online_enrollment(@name)
     # repeated code --> method?
     enrollment_in_year = online_enrollment.select { |row| row if row[:timeframe].to_i == year }
     enrollment_in_year.empty? ? return : enrollment_in_year.first[:data].to_i
   end
 
   def participation_by_year
-    pupil_enrollment = SmartEnrollmentLoader.load_enrollment(@name)
+    pupil_enrollment = EnrollmentLoader.load_enrollment(@name)
     pupil_enrollment.empty? ? return : results = {}
     pupil_enrollment.sort_by! { |row| row[:timeframe] }
                     .each { |row| results[row[:timeframe].to_i] = row[:data].to_i }
@@ -135,7 +134,7 @@ class Enrollment
   end
 
   def participation_in_year(year)
-    pupil_enrollment = SmartEnrollmentLoader.load_enrollment(@name)
+    pupil_enrollment = EnrollmentLoader.load_enrollment(@name)
     # repeated code --> method?
     enrollment_in_year = pupil_enrollment.select { |row| row if row[:timeframe].to_i == year }
     enrollment_in_year.empty? ? return : enrollment_in_year.first[:data].to_i
@@ -145,7 +144,7 @@ class Enrollment
     # RACES constant doesn't include 'American Indian Students'
     # :race key vs. :category key
     raise UnknownRaceError unless RACES[race]
-    enrollment_by_race = SmartEnrollmentLoader.load_enrollment_by_race(@name)
+    enrollment_by_race = EnrollmentLoader.load_enrollment_by_race(@name)
     enrollment_by_race.select! { |row| row if row[:race] == RACES[race] }
     enrollment_by_race.empty? ? return : results = {}
     enrollment_by_race.each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f if row[:dataformat] == 'Percent' }
@@ -153,7 +152,7 @@ class Enrollment
   end
 
   def participation_by_race_or_ethnicity_in_year(year)
-    participation = SmartEnrollmentLoader.load_enrollment_by_race(@name)
+    participation = EnrollmentLoader.load_enrollment_by_race(@name)
     by_race_in_year = participation.select do |row|
       row if (row[:timeframe].to_i == year && (row[:dataformat] == 'Percent'))
     end
@@ -171,7 +170,7 @@ class Enrollment
   end
 
   def special_education_by_year
-    special_ed = SmartEnrollmentLoader.load_special_ed(@name)
+    special_ed = EnrollmentLoader.load_special_ed(@name)
     special_by_year = special_ed.select do |row|
       row if (row[:dataformat] == 'Percent')
     end
@@ -183,7 +182,7 @@ class Enrollment
   end
 
   def special_education_in_year(year)
-    special_ed = SmartEnrollmentLoader.load_special_ed(@name)
+    special_ed = EnrollmentLoader.load_special_ed(@name)
     result = special_ed.select do |row|
       row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
     end
@@ -191,7 +190,7 @@ class Enrollment
   end
 
   def remediation_by_year
-    remediation = SmartEnrollmentLoader.load_remediation(@name)
+    remediation = EnrollmentLoader.load_remediation(@name)
     rem = remediation.select { |row| row if row[:dataformat] == 'Percent' }
     rem.empty? ? return : result = {}
     rem.each do |row|
@@ -201,7 +200,7 @@ class Enrollment
   end
 
   def remediation_in_year(year)
-    remediation = SmartEnrollmentLoader.load_remediation(@name)
+    remediation = EnrollmentLoader.load_remediation(@name)
     result = remediation.select do |row|
       row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'Percent')
     end

@@ -5,6 +5,7 @@ class EnrollmentTest < Minitest::Test
 
   def setup
     #EnrollmentParser.file_type = TestFiles #TestFiles # sets Parser to use fixtures for the tests
+    EnrollmentLoader.file_dir = '../data'
     @enrollment1 = Enrollment.new('ACADEMY 20')
     @enrollment2 = Enrollment.new('Colorado')
   end

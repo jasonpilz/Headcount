@@ -1,6 +1,6 @@
-require_relative '../lib/smart_input_files'
+require_relative '../lib/input_files'
 
-class SmartInputFilesTest < Minitest::Test
+class InputFilesTest < Minitest::Test
   def test_it_loads_in_all_files_from_a_directory
     filenames = ["/Users/patwey/code/headcount/data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
                  "/Users/patwey/code/headcount/data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
@@ -19,11 +19,11 @@ class SmartInputFilesTest < Minitest::Test
                  "/Users/patwey/code/headcount/data/Special education.csv",
                  "/Users/patwey/code/headcount/data/Students qualifying for free or reduced price lunch.csv",
                  "/Users/patwey/code/headcount/data/Title I students.csv"]
-    assert_equal filenames, SmartInputFiles.new('../data').filenames
+    assert_equal filenames, InputFiles.new('../data').filenames
   end
 
   def test_it_sorts_all_files_based_on_keywords_in_filenames
-    sif = SmartInputFiles.new('../data')
+    sif = InputFiles.new('../data')
     assert_equal ["/Users/patwey/code/headcount/data/Dropout rates by race and ethnicity.csv", 'csv'], sif.dropout_rates.first
     assert_equal ["/Users/patwey/code/headcount/data/High school graduation rates.csv", 'csv'], sif.grad_rates.first
     assert_equal ["/Users/patwey/code/headcount/data/Kindergartners in full-day program.csv", 'csv'], sif.kindergarten.first
@@ -34,7 +34,7 @@ class SmartInputFilesTest < Minitest::Test
   end
 
   def test_it_returns_array_with_information_on_file_type
-    sif = SmartInputFiles.new('../data')
+    sif = InputFiles.new('../data')
     assert_equal 'csv', sif.dropout_rates.flatten.last
   end
 end

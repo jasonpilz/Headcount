@@ -1,25 +1,121 @@
 class InputFiles
-  # Enrollment
-  DROPOUT_RATES = File.expand_path("../data/Dropout rates by race and ethnicity.csv", __dir__)
-  GRAD_RATES = File.expand_path("../data/High school graduation rates.csv", __dir__)
-  KINDERGARTEN = File.expand_path("../data/Kindergartners in full-day program.csv", __dir__)
-  ONLINE_PUPIL_ENROLL = File.expand_path("../data/Online pupil enrollment.csv", __dir__)
-  PUPIL_ENROLL_BY_RACE = File.expand_path("../data/Pupil enrollment by race_ethnicity.csv", __dir__)
-  PUPIL_ENROLL = File.expand_path("../data/Pupil enrollment.csv", __dir__)
-  SPECIAL_ED = File.expand_path("../data/Special education.csv", __dir__)
-  REMEDIATION = File.expand_path("../data/Remediation in higher education.csv", __dir__)
+  # can be initialized with a dir name
+  # file groups are called as methods on the instance
+  # e.g. sif = SmartInputFiles.new('../fake_dir')
+  #      returns a nested array: [[filepath, csv]]
+  #                        also: [[file1, csv], [file2, json]]
 
-  # Statewide Testing
+  # CURRENTLY ONLY WORKS FOR ENROLLMENT RELATED FILES
 
-  THIRD_GRADE_TESTING = File.expand_path("../data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv", __dir__)
-  EIGHTH_GRADE_TESTING = File.expand_path("../data/8th grade students scoring proficient or above on the CSAP_TCAP.csv", __dir__)
-  MATH_PROFICIENCY_BY_RACE = File.expand_path("../data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv", __dir__)
-  READING_PROFICIENCY_BY_RACE = File.expand_path("../data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv", __dir__)
-  WRITING_PROFICIENCY_BY_RACE = File.expand_path("../data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv", __dir__)
+  attr_reader :filenames
 
-  # Economic Profile
-  MEDIAN_INCOME = File.expand_path("../data/Median household income.csv", __dir__)
-  CHILDREN_IN_POVERTY = File.expand_path("../data/School-aged children in poverty.csv", __dir__)
-  REDUCED_LUNCH = File.expand_path("../data/Students qualifying for free or reduced price lunch.csv", __dir__)
-  TITLE_I = File.expand_path("../data/Title I students.csv", __dir__)
+  def initialize(dir_name = '../data')
+    @data_dir = File.expand_path dir_name, __dir__
+    @filenames = Dir.glob("#{@data_dir}/*")
+  end
+
+  def get_formatted_filename(filepath)
+    filepath.split('/').last.split('.').first.downcase
+  end
+
+  def get_file_type(filepath)
+    filepath.split('/').last.split('.').last.downcase
+  end
+
+  def dropout_rates
+    dropout_rates = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      dropout_rates << [filename, type] if name.include?('dropout') ||
+                                           name.include?('drop')
+    end
+    dropout_rates.uniq
+  end
+
+  def grad_rates
+    grad_rates = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      grad_rates << [filename, type] if (name.include?('graduation') ||
+                                        name.include?('grad')) &&
+                                        !name.include?('grade')
+    # binding.pry
+    end
+    grad_rates.uniq
+  end
+
+  def kindergarten
+    kindergarten = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      kindergarten << [filename, type] if name.include?('kindergartners') ||
+                                          name.include?('kindergarten')
+    end
+    kindergarten.uniq
+  end
+
+  def online_pupil_enroll
+    online_pupil_enroll = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      online_pupil_enroll << [filename, type] if name.include?('online') &&
+                                                 (name.include?('enrollment') ||
+                                                 name.include?('enroll'))
+    end
+    online_pupil_enroll.uniq
+  end
+
+  def pupil_enroll_by_race
+    pupil_enroll_by_race = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      pupil_enroll_by_race << [filename, type] if (name.include?('race') ||
+                                                  name.include?('ethnicity')) &&
+                                                  (name.include?('enrollment') ||
+                                                  name.include?('enroll'))
+    end
+    pupil_enroll_by_race.uniq
+  end
+
+  def pupil_enroll
+    pupil_enroll = []
+    @filenames.each do |filename|
+    name = get_formatted_filename(filename)
+    type = get_file_type(filename)
+    pupil_enroll << [filename, type] if (name.include?('enrollment') ||
+                                        name.include?('enroll')) &&
+                                        (!name.include?('online') &&
+                                        !name.include?('race') &&
+                                        !name.include?('ethnicity'))
+    end
+    pupil_enroll.uniq
+  end
+
+  def special_ed
+    special_ed = []
+    @filenames.each do |filename|
+    name = get_formatted_filename(filename)
+    type = get_file_type(filename)
+    special_ed << [filename, type] if name.include?('special') ||
+                                      name.include?('special-education') ||
+                                      name.include?('special-ed')
+    end
+    special_ed.uniq
+  end
+
+  def remediation
+    remediation = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      remediation << [filename, type] if name.include?('remediation') ||
+                                         name.include?('remed')
+    end
+    remediation.uniq
+  end
 end
