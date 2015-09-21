@@ -20,17 +20,19 @@ class Enrollment
     @name = name
   end
 
+  def format(value)
+    value[0..4].to_f
+  end
+
   def dropout_rate_in_year(year)
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
-
     # parser class/method?
     row = dropout_rates.select { |row| row if row[:timeframe].to_i == year && row[:category] == "all students" }
-    rate = row[0][:data][0..4].to_f unless row.empty?
+    format(row[0][:data]) unless row.empty?
   end
 
   def dropout_rate_by_gender_in_year(year)
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
-
     # parser class/method?
     rows = dropout_rates.select { |row| row if row[:timeframe].to_i == year && (row[:category] == "male students" || row[:category] == "female students") }
     result = {}
@@ -49,13 +51,13 @@ class Enrollment
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
       # set these relationships to a constant hash?
-      result[:asian] = row[:data][0..4].to_f if row[:category] == RACES[:asian]
-      result[:black] = row[:data][0..4].to_f if row[:category] == RACES[:black]
-      result[:pacific_islander] = row[:data][0..4].to_f if row[:category] == RACES[:pacific_islander]
-      result[:hispanic] = row[:data][0..4].to_f if row[:category] == RACES[:hispanic]
-      result[:native_american] = row[:data][0..4].to_f if row[:category] == RACES[:native_american]
-      result[:two_or_more] = row[:data][0..4].to_f if row[:category] == RACES[:two_or_more]
-      result[:white] = row[:data][0..4].to_f if row[:category] == RACES[:white]
+      result[:asian] = format(row[:data]) if row[:category] == RACES[:asian]
+      result[:black] = format(row[:data]) if row[:category] == RACES[:black]
+      result[:pacific_islander] = format(row[:data]) if row[:category] == RACES[:pacific_islander]
+      result[:hispanic] = format(row[:data]) if row[:category] == RACES[:hispanic]
+      result[:native_american] = format(row[:data]) if row[:category] == RACES[:native_american]
+      result[:two_or_more] = format(row[:data]) if row[:category] == RACES[:two_or_more]
+      result[:white] = format(row[:data]) if row[:category] == RACES[:white]
     end
     result
   end
@@ -63,10 +65,10 @@ class Enrollment
   def dropout_rate_for_race_or_ethnicity(race)
     raise UnknownRaceError unless RACES[race]
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
-    race_by_year = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race)}
+    race_by_year = dropout_rates.select { |row| row if row[:category] == RACES[race]}
     race_by_year.empty? ? return : result = {}
     race_by_year.each do |row|
-      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+      result[row[:timeframe].to_i] = format(row[:data])
     end
     result
   end
@@ -75,15 +77,15 @@ class Enrollment
     raise UnknownRaceError unless RACES[race]
     dropout_rates = EnrollmentParser.parse_dropout_rates(@name)
     # repeated code --> method?
-    rate = dropout_rates.select { |row| row if row[:category] == RACES.fetch(race) && row[:timeframe].to_i == year }
-    rate.empty? ? return : rate.first[:data][0..4].to_f
+    rate = dropout_rates.select { |row| row if row[:category] == RACES[race] && row[:timeframe].to_i == year }
+    rate.empty? ? return : format(rate.first[:data])
   end
 
   def graduation_rate_by_year
     grad_rates = EnrollmentParser.parse_grad_rates(@name)
     grad_rates.empty? ? return : result = {}
     grad_rates.each do |row|
-      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+      result[row[:timeframe].to_i] = format(row[:data])
     end
     result
   end
@@ -92,14 +94,14 @@ class Enrollment
     grad_rates = EnrollmentParser.parse_grad_rates(@name)
     # repeated code --> method?
     rate = grad_rates.select { |row| row if row[:timeframe].to_i == year }
-    rate.empty? ? return : rate.first[:data][0..4].to_f
+    rate.empty? ? return : format(rate.first[:data])
   end
 
   def kindergarten_participation_by_year
     kindergarten = EnrollmentParser.parse_kindergarten(@name)
     kindergarten.empty? ? return : results = {}
     kindergarten.sort_by! { |row| row[:timeframe] }
-                .each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f }
+                .each { |row| results[row[:timeframe].to_i] = format(row[:data]) }
     results
   end
 
@@ -107,7 +109,7 @@ class Enrollment
     kindergarten = EnrollmentParser.parse_kindergarten(@name)
     # repeated code --> method?
     result = kindergarten.select { |row| row if row[:timeframe].to_i == year }
-    result.empty? ? return : result.first[:data][0..4].to_f
+    result.empty? ? return : format(result.first[:data])
   end
 
   def online_participation_by_year
@@ -147,7 +149,7 @@ class Enrollment
     enrollment_by_race = EnrollmentParser.parse_enrollment_by_race(@name)
     enrollment_by_race.select! { |row| row if row[:race] == RACES[race] }
     enrollment_by_race.empty? ? return : results = {}
-    enrollment_by_race.each { |row| results[row[:timeframe].to_i] = row[:data][0..4].to_f if row[:dataformat] == 'percent' }
+    enrollment_by_race.each { |row| results[row[:timeframe].to_i] = format(row[:data]) if row[:dataformat] == 'percent' }
     results
   end
 
@@ -158,13 +160,13 @@ class Enrollment
     end
     by_race_in_year.empty? ? return : result = {}
     by_race_in_year.each do |row|
-      result[:asian] = row[:data][0..4].to_f if row[:race] == RACES[:asian]
-      result[:black] = row[:data][0..4].to_f if row[:race] == RACES[:black]
-      result[:pacific_islander] = row[:data][0..4].to_f if row[:race] == RACES[:pacific_islander]
-      result[:hispanic] = row[:data][0..4].to_f if row[:race] == RACES[:hispanic]
-      result[:native_american] = row[:data][0..4].to_f if row[:race] == "american indian students"
-      result[:two_or_more] = row[:data][0..4].to_f if row[:race] == RACES[:two_or_more]
-      result[:white] = row[:data][0..4].to_f if row[:race] == RACES[:white]
+      result[:asian] = format(row[:data]) if row[:race] == RACES[:asian]
+      result[:black] = format(row[:data]) if row[:race] == RACES[:black]
+      result[:pacific_islander] = format(row[:data]) if row[:race] == RACES[:pacific_islander]
+      result[:hispanic] = format(row[:data]) if row[:race] == RACES[:hispanic]
+      result[:native_american] = format(row[:data]) if row[:race] == "american indian students"
+      result[:two_or_more] = format(row[:data]) if row[:race] == RACES[:two_or_more]
+      result[:white] = format(row[:data]) if row[:race] == RACES[:white]
     end
     result
   end
@@ -176,7 +178,7 @@ class Enrollment
     end
     special_by_year.empty? ? return : result = {}
     special_by_year.each do |row|
-      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+      result[row[:timeframe].to_i] = format(row[:data])
     end
     result
   end
@@ -186,7 +188,7 @@ class Enrollment
     result = special_ed.select do |row|
       row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'percent')
     end
-    result.empty? ? return : result.first[:data][0..4].to_f
+    result.empty? ? return : format(result.first[:data])
   end
 
   def remediation_by_year
@@ -194,7 +196,7 @@ class Enrollment
     rem = remediation.select { |row| row if row[:dataformat] == 'percent' }
     rem.empty? ? return : result = {}
     rem.each do |row|
-      result[row[:timeframe].to_i] = row[:data][0..4].to_f
+      result[row[:timeframe].to_i] = format(row[:data])
     end
     result
   end
@@ -204,7 +206,7 @@ class Enrollment
     result = remediation.select do |row|
       row if (row[:timeframe].to_i == year) && (row[:dataformat] == 'percent')
     end
-    result.empty? ? return : result.first[:data][0..4].to_f
+    result.empty? ? return : format(result.first[:data])
   end
 
 end
