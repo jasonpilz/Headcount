@@ -118,4 +118,56 @@ class InputFiles
     end
     remediation.uniq
   end
+
+  def third_grade_testing
+    third_grade_testing = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      third_grade_testing << [filename, type] if name.include?('3rd') ||
+                                                 name.include?('third')
+    end
+    third_grade_testing.uniq
+  end
+
+  def eighth_grade_testing
+    eighth_grade_testing = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      eighth_grade_testing << [filename, type] if name.include?('8th') ||
+                                                 name.include?('eighth')
+    end
+    eighth_grade_testing.uniq
+  end
+
+  def math_proficiency_by_race
+    math_proficiency_by_race = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      math_proficiency_by_race << [filename, type] if name.include?('math')
+    end
+    math_proficiency_by_race.uniq
+  end
+
+  def reading_proficiency_by_race
+    reading_proficiency = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      reading_proficiency << [filename, type] if name.include?('reading')
+    end
+    reading_proficiency.uniq
+  end
+
+  def writing_proficiency_by_race
+    writing_proficiency = []
+    @filenames.each do |filename|
+      name = get_formatted_filename(filename)
+      type = get_file_type(filename)
+      writing_proficiency << [filename, type] if name.include?('writing')
+    end
+    writing_proficiency.uniq
+  end
 end

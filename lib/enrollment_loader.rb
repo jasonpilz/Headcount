@@ -1,6 +1,6 @@
 require 'csv'
 require 'pry'
-require_relative './input_files'
+require_relative 'input_files'
 
 class EnrollmentLoader
   # initialized with a SIF instance referencing ../data

@@ -1,5 +1,5 @@
-require_relative './enrollment_parser'
-require_relative './enrollment_loader'
+require_relative 'enrollment_parser'
+require_relative 'enrollment_loader'
 require 'pry'
 
 class UnknownRaceError < StandardError

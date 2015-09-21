@@ -1,9 +1,9 @@
 require 'csv'
 require 'pry'
-require_relative './input_files'
+require_relative 'input_files'
 
 class EnrollmentParser
-  
+
   @file_type = InputFiles
 
   def self.file_type=(type)

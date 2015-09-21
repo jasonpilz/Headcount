@@ -1,5 +1,5 @@
 require 'pry'
-require_relative './statewide_testing_parser'
+require_relative 'statewide_testing_loader'
 
 class UnknownDataError < StandardError
 end
@@ -21,9 +21,9 @@ class StatewideTesting
 
   def proficient_by_grade(grade)
     if grade.to_i == 3
-      pro_by_grade = StatewideTestingParser.parse_third_grade(@name)
+      pro_by_grade = StatewideTestingLoader.load_third_grade(@name)
     elsif grade.to_i == 8
-      pro_by_grade = StatewideTestingParser.parse_eighth_grade(@name)
+      pro_by_grade = StatewideTestingLoader.load_eighth_grade(@name)
     else
       raise UnknownDataError
     end
@@ -41,11 +41,10 @@ class StatewideTesting
 
   def proficient_by_race_or_ethnicity(race)
     raise UnknownDataError unless RACES[race]
-    math = StatewideTestingParser.parse_math(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Math' }
-    reading = StatewideTestingParser.parse_reading(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Reading' }
-    writing = StatewideTestingParser.parse_writing(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Writing' }
+    math = StatewideTestingLoader.load_math(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Math' }
+    reading = StatewideTestingLoader.load_reading(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Reading' }
+    writing = StatewideTestingLoader.load_writing(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'Writing' }
     pro_by_race = (math + reading + writing).flatten
-
     result = {}
     pro_by_race = pro_by_race.group_by { |row| row[:timeframe] }
     pro_by_race.each_pair do |year, arr|
@@ -60,9 +59,9 @@ class StatewideTesting
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
     if grade.to_i == 3
-      pro_by_grade = StatewideTestingParser.parse_third_grade(@name)
+      pro_by_grade = StatewideTestingLoader.load_third_grade(@name)
     elsif grade.to_i == 8
-      pro_by_grade = StatewideTestingParser.parse_eighth_grade(@name)
+      pro_by_grade = StatewideTestingLoader.load_eighth_grade(@name)
     else
       raise UnknownDataError
     end
@@ -76,11 +75,11 @@ class StatewideTesting
   def proficient_for_subject_by_race_in_year(subject, race, year)
     case subject
     when :math
-      pro_by_subject = StatewideTestingParser.parse_math(@name)
+      pro_by_subject = StatewideTestingLoader.load_math(@name)
     when :reading
-      pro_by_subject = StatewideTestingParser.parse_reading(@name)
+      pro_by_subject = StatewideTestingLoader.load_reading(@name)
     when :writing
-      pro_by_subject = StatewideTestingParser.parse_writing(@name)
+      pro_by_subject = StatewideTestingLoader.load_writing(@name)
     else
       raise UnknownDataError
     end
@@ -94,11 +93,11 @@ class StatewideTesting
   def proficient_for_subject_in_year(subject, year)
     case subject
     when :math
-      pro_by_subject = StatewideTestingParser.parse_math(@name)
+      pro_by_subject = StatewideTestingLoader.load_math(@name)
     when :reading
-      pro_by_subject = StatewideTestingParser.parse_reading(@name)
+      pro_by_subject = StatewideTestingLoader.load_reading(@name)
     when :writing
-      pro_by_subject = StatewideTestingParser.parse_writing(@name)
+      pro_by_subject = StatewideTestingLoader.load_writing(@name)
     else
       raise UnknownDataError
     end

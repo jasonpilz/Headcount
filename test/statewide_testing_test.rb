@@ -1,10 +1,12 @@
 require_relative '../lib/statewide_testing'
+require_relative '../lib/statewide_testing_loader'
 require_relative '../lib/test_files'
 
 class StatewideTestingTest < Minitest::Test
 
   def setup
     #StatewideTestingParser.file_type = TestFiles # sets Parser to use fixtures for the tests
+    StatewideTestingLoader.file_dir = '../data'
     @statewide1 = StatewideTesting.new('ACADEMY 20')
     @statewide2 = StatewideTesting.new('Colorado')
   end
