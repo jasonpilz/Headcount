@@ -1,5 +1,4 @@
 require 'pry'
-require_relative 'enrollment_parser'
 
 class UnknownRaceError < StandardError
 end

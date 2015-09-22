@@ -1,5 +1,6 @@
 require_relative 'district'
 require 'csv'
+require 'csv_parser'
 
 class DistrictRepository
   attr_reader :districts

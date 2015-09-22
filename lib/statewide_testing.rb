@@ -1,5 +1,4 @@
 require 'pry'
-require_relative 'csv_parser'
 
 class UnknownDataError < StandardError
 end
