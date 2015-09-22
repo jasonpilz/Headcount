@@ -1,15 +1,16 @@
 require 'pry'
-require_relative 'economic_profile_parser'
+require_relative 'csv_parser'
 
 class EconomicProfile
-  attr_reader :name
+  attr_reader :name, :parser
 
-  def initialize(name)
+  def initialize(name, parser)
     @name = name
+    @parser = parser
   end
 
   def free_or_reduced_lunch_by_year
-    lunch_by_year = EconomicProfileParser.parse_reduced_lunch(@name)
+    lunch_by_year = @parser.parse_reduced_lunch(@name)
     lunch_percent = lunch_by_year.select do |row|
       row if (row[:dataformat] == "percent") && (row[:poverty_level] == "eligible for free or reduced lunch")
     end
@@ -21,7 +22,7 @@ class EconomicProfile
   end
 
   def free_or_reduced_lunch_in_year(year)
-    lunch_by_year = EconomicProfileParser.parse_reduced_lunch(@name)
+    lunch_by_year = @parser.parse_reduced_lunch(@name)
     lunch_in_year = lunch_by_year.select do |row|
       row if (row[:dataformat] == "percent") && (row[:poverty_level] == "eligible for free or reduced lunch") && (row[:timeframe].to_i == year)
     end
@@ -29,7 +30,7 @@ class EconomicProfile
   end
 
   def school_aged_children_in_poverty_by_year
-    children = EconomicProfileParser.parse_children_in_poverty(@name)
+    children = @parser.parse_children_in_poverty(@name)
     children_by_year = children.select do |row|
       row if row[:dataformat] == 'percent'
     end
@@ -42,7 +43,7 @@ class EconomicProfile
   end
 
   def school_aged_children_in_poverty_in_year(year)
-    children = EconomicProfileParser.parse_children_in_poverty(@name)
+    children = @parser.parse_children_in_poverty(@name)
     children_by_year = children.select do |row|
       row if row[:dataformat] == 'percent' && row[:timeframe].to_i == year
     end
@@ -50,7 +51,7 @@ class EconomicProfile
   end
 
   def title_1_students_by_year
-    title_1 = EconomicProfileParser.parse_title_1(@name)
+    title_1 = @parser.parse_title_1(@name)
     result = {}
     students_by_year = title_1.select do |row|
       result[row[:timeframe].to_i] = row[:data][0..4].to_f if row[:dataformat] == 'percent'
@@ -59,7 +60,7 @@ class EconomicProfile
   end
 
   def title_1_students_in_year(year)
-    title_1 = EconomicProfileParser.parse_title_1(@name)
+    title_1 = @parser.parse_title_1(@name)
     title_1_in_year = title_1.select do |row|
         row if row[:dataformat] == 'percent' && row[:timeframe].to_i == year
     end

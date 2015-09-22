@@ -21,5 +21,5 @@ class TestFiles
   MEDIAN_INCOME = File.expand_path("../test/fixtures/median_income.csv", __dir__)
   CHILDREN_IN_POVERTY = File.expand_path("../test/fixtures/children_in_poverty.csv", __dir__)
   REDUCED_LUNCH = File.expand_path("../test/fixtures/reduced_lunch.csv", __dir__)
-  TITLE_I = File.expand_path("../test/fixtures/title_i.csv", __dir__)
+  TITLE_1 = File.expand_path("../test/fixtures/title_i.csv", __dir__)
 end

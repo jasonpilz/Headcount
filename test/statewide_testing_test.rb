@@ -1,12 +1,11 @@
 require_relative '../lib/statewide_testing'
-require_relative '../lib/test_files'
 
 class StatewideTestingTest < Minitest::Test
 
   def setup
-    StatewideTestingParser.file_type = TestFiles # sets Parser to use fixtures
-    @statewide1 = StatewideTesting.new('ACADEMY 20')
-    @statewide2 = StatewideTesting.new('Colorado')
+    csv_parser = CSVParser.new(TestFiles)
+    @statewide1 = StatewideTesting.new('ACADEMY 20', csv_parser)
+    @statewide2 = StatewideTesting.new('Colorado', csv_parser)
   end
 
   def test_it_takes_district_name_by_default

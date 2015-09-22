@@ -3,10 +3,11 @@ require_relative 'enrollment'
 require_relative 'economic_profile'
 
 class District
-  attr_accessor :name
+  attr_reader :name, :parser
 
-  def initialize(name)
+  def initialize(name, parser)
     @name = name
+    @parser = parser
   end
 
   def name
@@ -14,14 +15,14 @@ class District
   end
 
   def statewide_testing
-    StatewideTesting.new(@name)
+    StatewideTesting.new(@name, @parser)
   end
 
   def enrollment
-    Enrollment.new(@name)
+    Enrollment.new(@name, @parser)
   end
 
   def economic_profile
-    EconomicProfile.new(@name)
+    EconomicProfile.new(@name, @parser)
   end
 end

@@ -1,12 +1,11 @@
 require_relative '../lib/enrollment'
-require_relative '../lib/test_files'
 
 class EnrollmentTest < Minitest::Test
 
   def setup
-    EnrollmentParser.file_type = TestFiles # sets Parser to use fixtures
-    @enrollment1 = Enrollment.new('ACADEMY 20')
-    @enrollment2 = Enrollment.new('Colorado')
+    csv_parser = CSVParser.new(TestFiles)
+    @enrollment1 = Enrollment.new('ACADEMY 20', csv_parser)
+    @enrollment2 = Enrollment.new('Colorado', csv_parser)
   end
 
   def test_dropout_rate_with_test_file
