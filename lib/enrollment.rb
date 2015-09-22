@@ -147,7 +147,7 @@ class Enrollment
     # :race key vs. :category key
     raise UnknownRaceError unless RACES[race]
     enrollment_by_race = EnrollmentParser.parse_enrollment_by_race(@name)
-    enrollment_by_race.select! { |row| row if row[:race] == RACES[race] }
+    enrollment_by_race.select! { |row| row if (row[:race] == RACES[race] || row[:race] == "american indian students") }
     enrollment_by_race.empty? ? return : results = {}
     enrollment_by_race.each { |row| results[row[:timeframe].to_i] = format(row[:data]) if row[:dataformat] == 'percent' }
     results
