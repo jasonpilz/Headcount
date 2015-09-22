@@ -80,10 +80,8 @@ class StatewideTestingTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_grade_in_year_returns_percentage_value_as_three_digit_float
-    skip
-    # Need to implement adding trailing zeros...
-    assert_equal 5, @statewide2.proficient_for_subject_by_grade_in_year(:reading, 8, 2011).to_s.length
-    assert_equal 5, @statewide2.proficient_for_subject_by_grade_in_year(:writing, 8, 2014).to_s.length
+    assert_equal 0.514, @statewide2.proficient_for_subject_by_grade_in_year(:math, 8, 2013)
+    assert_equal 0.523, @statewide2.proficient_for_subject_by_grade_in_year(:math, 8, 2014)
   end
 
   def test_proficient_for_subject_by_race_in_year_returns_correct_value
@@ -103,10 +101,8 @@ class StatewideTestingTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_race_in_year_returns_percentage_value_as_three_digit_float
-    skip
-    # Need to implement adding trailing zeros...
-    assert_equal 5, @statewide2.proficient_for_subject_by_race_in_year(:reading, :black, 2011).to_s.length
-    assert_equal 5, @statewide1.proficient_for_subject_by_race_in_year(:writing, :white, 2013).to_s.length
+    assert_equal 0.486, @statewide2.proficient_for_subject_by_race_in_year(:reading, :black, 2011)
+    assert_equal 0.740, @statewide1.proficient_for_subject_by_race_in_year(:writing, :white, 2013)
   end
 
   def test_proficient_for_subject_in_year_returns_correct_value
@@ -123,9 +119,8 @@ class StatewideTestingTest < Minitest::Test
   end
 
   def test_proficient_for_subject_in_year_returns_percentage_value_as_three_digit_float
-    skip
-    assert_equal 5, @statewide2.proficient_for_subject_in_year(:reading, 2011).to_s.length
-    assert_equal 5, @statewide1.proficient_for_subject_in_year(:writing, 2013).to_s.length
+    assert_equal 0.680, @statewide2.proficient_for_subject_in_year(:reading, 2011)
+    assert_equal 0.720, @statewide1.proficient_for_subject_in_year(:writing, 2013)
   end
 
 end
