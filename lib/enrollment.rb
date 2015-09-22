@@ -1,6 +1,5 @@
-require_relative './input_files'
-require_relative './enrollment_parser'
 require 'pry'
+require_relative 'enrollment_parser'
 
 class UnknownRaceError < StandardError
 end

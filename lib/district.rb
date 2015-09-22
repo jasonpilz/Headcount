@@ -14,17 +14,14 @@ class District
   end
 
   def statewide_testing
-    #returns an instance of StatewideTesting
     StatewideTesting.new(@name)
   end
 
   def enrollment
-    #returns an instance of Enrollment
     Enrollment.new(@name)
   end
 
   def economic_profile
     EconomicProfile.new(@name)
   end
-
 end

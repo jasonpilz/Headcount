@@ -1,4 +1,3 @@
-# have the loaders communicate with this class?
 class TestFiles
 
   # Enrollment

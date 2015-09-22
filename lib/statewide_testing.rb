@@ -1,5 +1,5 @@
 require 'pry'
-require_relative './statewide_testing_parser'
+require_relative 'statewide_testing_parser'
 
 class UnknownDataError < StandardError
 end
