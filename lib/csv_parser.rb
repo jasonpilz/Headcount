@@ -5,7 +5,7 @@ require_relative 'test_files'
 class CSVParser
   attr_accessor :test_file_type, :data_dir
 
-  BAD_VALUES = ["#value!", "n/a", "lne"]
+  BAD_VALUES = ['#value!', 'n/a', 'lne']
 
   def initialize(data_dir, test_file_type = InputFiles)
     @test_file_type = test_file_type
@@ -20,10 +20,10 @@ class CSVParser
 
   def get_csv_rows(file)
     file = File.join(data_dir, file)
-    rows = CSV.read(file, headers: true, header_converters: :symbol)
+    CSV.read(file, headers: true, header_converters: :symbol)
   end
 
-  def validate_rows(rows, name, validated=[])
+  def validate_rows(rows, name, validated = [])
     rows.each do |row|
       if row[:location] == name && row[:data]
         validated << row.to_h unless BAD_VALUES.include?(row[:data].downcase)
@@ -37,7 +37,7 @@ class CSVParser
   end
 
   def downcase(results)
-    results.each { |row| row.each_pair { |k,v| v.downcase! }  }
+    results.each { |row| row.each_value(&:downcase!) }
   end
 
   def parse_grad_rates(name)

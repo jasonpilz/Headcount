@@ -3,7 +3,7 @@ require_relative 'enrollment'
 require_relative 'economic_profile'
 
 class District
-  attr_reader :name, :parser
+  attr_reader :name
 
   def initialize(name, parser)
     @name = name

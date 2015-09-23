@@ -13,8 +13,7 @@ class DistrictRepository
     filename = Dir.glob("#{data_dir}/*").first
     districts = {}
     CSV.foreach(filename) do |row|
-      next if row[0].upcase == 'location'.upcase
-      districts[row[0].upcase] = District.new(row[0], CSVParser.new(data_dir))
+      districts[row[0].upcase] ||= District.new(row[0], CSVParser.new(data_dir))
     end
     DistrictRepository.new(districts)
   end
@@ -24,16 +23,11 @@ class DistrictRepository
   end
 
   def find_by_name(name)
-    return unless @districts[name.upcase]
     @districts[name.upcase]
   end
 
-  def find_all_matching(name_fragment)
-    matches = []
-    @districts.each_pair do |k, v|
-      matches << v if k.include?(name_fragment.upcase)
-    end
+  def find_all_matching(fragment, matches = [])
+    @districts.each_pair { |k, v| matches << v if k.include?(fragment.upcase) }
     matches
   end
-
 end
