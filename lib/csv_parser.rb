@@ -1,10 +1,11 @@
 require 'csv'
-require 'pry'
 require_relative 'input_files'
 require_relative 'test_files'
 
 class CSVParser
   attr_accessor :test_file_type, :data_dir
+
+  BAD_VALUES = ["#value!", "n/a", "lne"]
 
   def initialize(data_dir, test_file_type = InputFiles)
     @test_file_type = test_file_type
@@ -12,24 +13,31 @@ class CSVParser
   end
 
   def parse(name, file)
-    results = []
+    rows = get_csv_rows(file)
+    results = validate_rows(rows, name)
+    downcase(results)
+  end
+
+  def get_csv_rows(file)
     file = File.join(data_dir, file)
     rows = CSV.read(file, headers: true, header_converters: :symbol)
+  end
+
+  def validate_rows(rows, name, validated=[])
     rows.each do |row|
       if row[:location] == name && row[:data]
-        results << row.to_h unless row[:data].downcase == "#value!" ||
-                                   row[:data].downcase == "n/a" ||
-                                   row[:data].downcase == "lne"
+        validated << row.to_h unless BAD_VALUES.include?(row[:data].downcase)
       end
     end
-    results.each do |row|
-      row.each_pair { |k,v| v.downcase! }
-    end
-    results
+    validated
   end
 
   def parse_dropout_rates(name)
     parse(name, @test_file_type::DROPOUT_RATES)
+  end
+
+  def downcase(results)
+    results.each { |row| row.each_pair { |k,v| v.downcase! }  }
   end
 
   def parse_grad_rates(name)
