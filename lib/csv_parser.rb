@@ -4,14 +4,16 @@ require_relative 'input_files'
 require_relative 'test_files'
 
 class CSVParser
-  attr_accessor :test_file_type
+  attr_accessor :test_file_type, :data_dir
 
-  def initialize (test_file_type = InputFiles)
+  def initialize(data_dir, test_file_type = InputFiles)
     @test_file_type = test_file_type
+    @data_dir = data_dir
   end
 
   def parse(name, file)
     results = []
+    file = File.join(data_dir, file)
     rows = CSV.read(file, headers: true, header_converters: :symbol)
     rows.each do |row|
       results << row.to_h if row[:location] == name

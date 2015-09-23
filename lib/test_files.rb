@@ -1,25 +1,25 @@
 class TestFiles
 
   # Enrollment
-  DROPOUT_RATES = File.expand_path("../test/fixtures/dropout_rates.csv", __dir__)
-  GRAD_RATES = File.expand_path("../test/fixtures/grad_rates.csv", __dir__)
-  KINDERGARTEN = File.expand_path("../test/fixtures/kindergarten.csv", __dir__)
-  ONLINE_PUPIL_ENROLL = File.expand_path("../test/fixtures/online_enrollment.csv", __dir__)
-  PUPIL_ENROLL_BY_RACE = File.expand_path("../test/fixtures/enrollment_by_race.csv", __dir__)
-  PUPIL_ENROLL = File.expand_path("../test/fixtures/pupil_enrollment.csv", __dir__)
-  SPECIAL_ED = File.expand_path("../test/fixtures/special_education.csv", __dir__)
-  REMEDIATION = File.expand_path("../test/fixtures/remediation.csv", __dir__)
+  DROPOUT_RATES = "dropout_rates.csv"
+  GRAD_RATES = "grad_rates.csv"
+  KINDERGARTEN = "kindergarten.csv"
+  ONLINE_PUPIL_ENROLL = "online_enrollment.csv"
+  PUPIL_ENROLL_BY_RACE = "enrollment_by_race.csv"
+  PUPIL_ENROLL = "pupil_enrollment.csv"
+  SPECIAL_ED = "special_education.csv"
+  REMEDIATION = "remediation.csv"
 
   # Statewide Testing
-  THIRD_GRADE_TESTING = File.expand_path("../test/fixtures/third_grade.csv", __dir__)
-  EIGHTH_GRADE_TESTING = File.expand_path("../test/fixtures/eighth_grade.csv", __dir__)
-  MATH_PROFICIENCY_BY_RACE = File.expand_path("../test/fixtures/math_proficiency_by_race.csv", __dir__)
-  READING_PROFICIENCY_BY_RACE = File.expand_path("../test/fixtures/reading_proficiency_by_race.csv", __dir__)
-  WRITING_PROFICIENCY_BY_RACE = File.expand_path("../test/fixtures/writing_proficiency_by_race.csv", __dir__)
+  THIRD_GRADE_TESTING = "third_grade.csv"
+  EIGHTH_GRADE_TESTING = "eighth_grade.csv"
+  MATH_PROFICIENCY_BY_RACE = "math_proficiency_by_race.csv"
+  READING_PROFICIENCY_BY_RACE = "reading_proficiency_by_race.csv"
+  WRITING_PROFICIENCY_BY_RACE = "writing_proficiency_by_race.csv"
 
   # Economic Profile
-  MEDIAN_INCOME = File.expand_path("../test/fixtures/median_income.csv", __dir__)
-  CHILDREN_IN_POVERTY = File.expand_path("../test/fixtures/children_in_poverty.csv", __dir__)
-  REDUCED_LUNCH = File.expand_path("../test/fixtures/reduced_lunch.csv", __dir__)
-  TITLE_1 = File.expand_path("../test/fixtures/title_i.csv", __dir__)
+  MEDIAN_INCOME = "median_income.csv"
+  CHILDREN_IN_POVERTY = "children_in_poverty.csv"
+  REDUCED_LUNCH = "reduced_lunch.csv"
+  TITLE_1 = "title_i.csv"
 end

@@ -1,9 +1,11 @@
 require_relative '../lib/enrollment'
+require_relative '../lib/csv_parser'
 
 class EnrollmentTest < Minitest::Test
 
   def setup
-    csv_parser = CSVParser.new(TestFiles)
+    dir = File.expand_path("fixtures", __dir__)
+    csv_parser = CSVParser.new(dir, TestFiles)
     @enrollment1 = Enrollment.new('ACADEMY 20', csv_parser)
     @enrollment2 = Enrollment.new('Colorado', csv_parser)
   end

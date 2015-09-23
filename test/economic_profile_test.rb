@@ -1,10 +1,13 @@
 require_relative '../lib/economic_profile'
+require_relative '../lib/csv_parser'
 
 class EconomicProfileTest < Minitest::Test
   def setup
-    csv_parser = CSVParser.new(TestFiles)
+    dir = File.expand_path("fixtures", __dir__)
+    csv_parser = CSVParser.new(dir, TestFiles)
     @economic1 = EconomicProfile.new('ACADEMY 20', csv_parser)
     @economic2 = EconomicProfile.new('Colorado', csv_parser)
+    @economic_unknown = EconomicProfile.new('JOSHCHEEK', csv_parser)
   end
 
   def test_free_or_reduced_lunch_by_year_returns_hash_with_years_as_keys_pointing_to_floats
@@ -60,7 +63,7 @@ class EconomicProfileTest < Minitest::Test
   end
 
   def test_title_1_students_by_year_returns_empty_hash_if_district_not_found
-    assert_equal Hash.new, EconomicProfile.new("JOSHCHEEK", CSVParser.new).title_1_students_by_year
+    assert_equal Hash.new, @economic_unknown.title_1_students_by_year
   end
 
   def test_title_1_students_in_year_returns_nil_for_unknown_year

@@ -14,7 +14,7 @@ class DistrictRepository
     districts = {}
     CSV.foreach(filename) do |row|
       next if row[0].upcase == 'location'.upcase
-      districts[row[0].upcase] = District.new(row[0], CSVParser.new)
+      districts[row[0].upcase] = District.new(row[0], CSVParser.new(data_dir))
     end
     DistrictRepository.new(districts)
   end
@@ -37,5 +37,3 @@ class DistrictRepository
   end
 
 end
-
-dr = DistrictRepository.new(File.expand_path '../data', __dir__)

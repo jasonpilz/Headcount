@@ -1,9 +1,11 @@
 require_relative '../lib/statewide_testing'
+require_relative '../lib/csv_parser'
 
 class StatewideTestingTest < Minitest::Test
 
   def setup
-    csv_parser = CSVParser.new(TestFiles)
+    dir = File.expand_path("fixtures", __dir__)
+    csv_parser = CSVParser.new(dir, TestFiles)
     @statewide1 = StatewideTesting.new('ACADEMY 20', csv_parser)
     @statewide2 = StatewideTesting.new('Colorado', csv_parser)
   end
