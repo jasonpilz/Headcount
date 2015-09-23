@@ -144,7 +144,7 @@ class Enrollment
                                                row[:race] == "american indian students") }
     enrollment_by_race.empty? ? return : results = {}
     enrollment_by_race.each do |row|
-      results[row[:timeframe].to_i] = truncate(row[:data]) if row[:dataformat] == 'percent' }
+      results[row[:timeframe].to_i] = truncate(row[:data]) if row[:dataformat] == 'percent'
     end
     results
   end

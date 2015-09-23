@@ -43,9 +43,15 @@ class StatewideTesting
 
   def proficient_by_race_or_ethnicity(race)
     raise UnknownDataError unless RACES[race]
-    math = @parser.parse_math(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'math' }
-    reading = @parser.parse_reading(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'reading' }
-    writing = @parser.parse_writing(@name).select { |row| row if row[:race_ethnicity] == RACES[race] }.each { |row| row[:score] = 'writing' }
+    math = @parser.parse_math(@name)
+                  .select { |row| row if row[:race_ethnicity] == RACES[race] }
+                  .each { |row| row[:score] = 'math' }
+    reading = @parser.parse_reading(@name)
+                     .select { |row| row if row[:race_ethnicity] == RACES[race] }
+                     .each { |row| row[:score] = 'reading' }
+    writing = @parser.parse_writing(@name)
+                     .select { |row| row if row[:race_ethnicity] == RACES[race] }
+                     .each { |row| row[:score] = 'writing' }
     pro_by_race = (math + reading + writing).flatten
 
     result = {}
