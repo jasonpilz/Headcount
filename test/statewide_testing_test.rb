@@ -124,4 +124,20 @@ class StatewideTestingTest < Minitest::Test
     assert_equal 0.720, @statewide1.proficient_for_subject_in_year(:writing, 2013)
   end
 
+  def test_it_omits_LNE_Excel_bullshit_0s_and_missing_data
+    dir = File.expand_path("../data", __dir__)
+    csv_parser = CSVParser.new(dir)
+    woodlin = StatewideTesting.new('WOODLIN R-104', csv_parser)
+    expected_result = {}
+    assert_equal expected_result, woodlin.proficient_by_grade(3)
+
+    east_yuma = StatewideTesting.new('EAST YUMA COUNTY RJ-2', csv_parser)
+    expected_result  = {2008=>{:writing=>0.341}, 2009=>{:writing=>0.402}}
+    assert_equal expected_result, east_yuma.proficient_by_grade(3)
+
+    west_yuma = StatewideTesting.new('WEST YUMA COUNTY RJ-1', csv_parser)
+    expected_result = {2008=>{:math=>0.512}, 2009=>{:math=>0.458}}
+    assert_equal expected_result, west_yuma.proficient_by_grade(3)
+  end
+
 end

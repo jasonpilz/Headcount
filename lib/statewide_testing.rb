@@ -32,9 +32,11 @@ class StatewideTesting
     pro_by_grade.each_pair do |year, arr|
       subjects = {}
       arr.each do |row|
-        subjects[row[:score].downcase.to_sym] = row[:data][0..4].to_f
+        unless row[:data] == "#value!" || row[:data] == "n/a" || row[:data] == "lne"
+          subjects[row[:score].downcase.to_sym] = row[:data][0..4].to_f
+        end
       end
-      result[year.to_i] = subjects
+      result[year.to_i] = subjects unless subjects.empty?
     end
     result
   end
