@@ -16,9 +16,15 @@ class CSVParser
     file = File.join(data_dir, file)
     rows = CSV.read(file, headers: true, header_converters: :symbol)
     rows.each do |row|
-      results << row.to_h if row[:location] == name
+      if row[:location] == name && row[:data]
+        results << row.to_h unless row[:data].downcase == "#value!" ||
+                                   row[:data].downcase == "n/a" ||
+                                   row[:data].downcase == "lne"
+      end
     end
-    results.each { |row| row.each_pair { |k,v| v.downcase! } }
+    results.each do |row|
+      row.each_pair { |k,v| v.downcase! }
+    end
     results
   end
 

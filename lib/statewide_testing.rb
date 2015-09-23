@@ -111,5 +111,4 @@ class StatewideTesting
     raise UnknownDataError if result.empty?
     result.first[:data][0..4].to_f
   end
-
 end
