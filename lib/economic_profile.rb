@@ -65,4 +65,13 @@ class EconomicProfile
     end
     title_1_in_year.empty? ? return : truncate(title_1_in_year[0][:data])
   end
+
+  def average_median_income
+    total = 0
+    median_incomes = @parser.parse_median_income(@name)
+    median_incomes.each do |row|
+      total += row[:data].to_i
+    end
+    total / median_incomes.count
+  end
 end

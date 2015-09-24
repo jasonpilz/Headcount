@@ -73,4 +73,8 @@ class EconomicProfileTest < Minitest::Test
   def test_title_1_students_in_year_returns_three_digit_float
     assert_equal 0.231, @economic2.title_1_students_in_year(2013)
   end
+
+  def test_average_median_income_returns_average_of_incomes_as_int
+    assert_equal 87635, @economic1.average_median_income
+  end
 end

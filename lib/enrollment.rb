@@ -89,6 +89,15 @@ class Enrollment
     result
   end
 
+  def average_graduation
+    graduation_by_year = graduation_rate_by_year
+    total = 0.0
+    unless graduation_by_year.nil?
+      graduation_by_year.each_value { |v| total += v }
+      (total / graduation_by_year.count).to_s[0..4].to_f
+    end
+  end
+
   def graduation_rate_in_year(year)
     grad_rates = @parser.parse_grad_rates(@name)
     rate = grad_rates.select { |row| row if row[:timeframe].to_i == year }
@@ -101,6 +110,15 @@ class Enrollment
     kindergarten.sort_by { |row| row[:timeframe] }
                 .each { |row| results[row[:timeframe].to_i] = truncate(row[:data]) }
     results
+  end
+
+  def average_kindergarten_participation
+    kindergarten_by_year = kindergarten_participation_by_year
+    total = 0.0
+    unless kindergarten_by_year.nil?
+      kindergarten_by_year.each_value { |v| total += v }
+      (total / kindergarten_by_year.count).to_s[0..4].to_f
+    end
   end
 
   def kindergarten_participation_in_year(year)

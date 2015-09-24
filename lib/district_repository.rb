@@ -13,7 +13,9 @@ class DistrictRepository
     filename = Dir.glob("#{data_dir}/*").first
     districts = {}
     CSV.foreach(filename) do |row|
-      districts[row[0].upcase] ||= District.new(row[0], CSVParser.new(data_dir))
+      unless row[0].downcase == 'location'
+        districts[row[0].upcase] ||= District.new(row[0], CSVParser.new(data_dir))
+      end
     end
     DistrictRepository.new(districts)
   end

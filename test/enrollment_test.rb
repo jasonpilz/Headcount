@@ -140,6 +140,10 @@ class EnrollmentTest < Minitest::Test
     assert_equal expected_result, @enrollment1.kindergarten_participation_by_year
   end
 
+  def test_average_kindergarten_participation_returns_percent_as_float
+    assert_equal 0.406, @enrollment1.average_kindergarten_participation
+  end
+
   def test_kindergarten_participation_in_year_returns_nil_for_unknown_year
     assert_nil @enrollment1.kindergarten_participation_in_year(3000)
   end
