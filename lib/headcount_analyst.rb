@@ -35,11 +35,7 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(name, compare_against)
-    if compare_against[:against] == 'state'
-      compared_name = 'COLORADO'
-    else
-      compared_name = compare_against[:against]
-    end
+    compared_name = compare_against[:against]
     district1 = @repo.find_by_name(name)
     district2 = @repo.find_by_name(compared_name)
     districts = [district1, district2]
@@ -76,7 +72,7 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_household_income(compare_for)
-    if compare_for[:for] == 'state'
+    if compare_for[:for].downcase == 'colorado'
       count = 0
       @repo.districts.each_key do |name|
         correlation = kindergarten_participation_against_household_income(name)
@@ -109,7 +105,7 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(name)
-    if name == 'state'
+    if name.downcase == 'colorado'
       count = 0
       @repo.districts.each_key do |name|
         correlation = kindergarten_participation_against_high_school_graduation(name)
